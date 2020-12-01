@@ -1,8 +1,19 @@
 <template>
   <v-container>
-    <v-sheet color="primary" rounded="lg">
-      <div ref="webcam"></div>
-    </v-sheet>
+    <v-row>
+      <v-col>
+        <v-sheet color="primary" rounded="lg">
+          <div ref="webcam"></div>
+        </v-sheet>
+      </v-col>
+      <v-col v-if="predictions.length > 0 && classWithHighestProbability >= 0" v-bind:key="predictions[classWithHighestProbability].className">
+        <v-card>
+          <p class="text-h1">
+            {{getEmoji(predictions[classWithHighestProbability].className)}}
+          </p>
+        </v-card>
+      </v-col>
+    </v-row>
     <v-row v-if="predictions">
       <v-col v-for="(prediction, i) in predictions" v-bind:key="prediction.className">
         <v-card :color="classWithHighestProbability === i ? 'orange lighten-3' : ''">
@@ -32,7 +43,7 @@ export default {
       model: null,
       webcam: null,
       predictions: [],
-      classWithHighestProb: 0,
+      classWithHighestProb: -1,
       url: 'https://teachablemachine.withgoogle.com/models/5L-T1cpFJ/'
     }
   },
@@ -75,6 +86,18 @@ export default {
           return 'mdi-close-thick'
         case 'hand raised':
           return 'mdi-hand'
+        default:
+          return 'mdi-exclamation-thick'
+      }
+    },
+    getEmoji: function(className) {
+      switch (className) {
+        case 'present':
+          return '👩‍💼'
+        case 'not present':
+          return '☕'
+        case 'hand raised':
+          return '🙋'
         default:
           return 'mdi-exclamation-thick'
       }
