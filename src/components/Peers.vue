@@ -1,0 +1,47 @@
+<template>
+  <v-row dense class="mt-2">
+    <v-col cols="6" v-for="peer in peers" v-bind:key="peer.name">
+      <v-card color="primaryAccent3" elevation="5">
+        <v-row>
+          <v-col cols="4" align="center">
+            <span class="text-h2">
+              {{ peer.emoji }}
+            </span>
+          </v-col>
+          <v-col cols="8">
+            <div class="text-h6 font-weight-bold primary--text">
+              {{ peer.name }}
+            </div>
+            <div v-if="peer.status">
+              {{ peer.status }}
+            </div>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-col>
+  </v-row>
+</template>
+
+<script>
+  export default {
+    name: 'HelloWorld',
+
+    data: () => ({
+      peers: [
+        {
+          name: 'Lisa',
+          emoji: '👩‍💼',
+        },
+        {
+          name: 'Marcus',
+          status: 'afk, I\'ll be right back',
+          emoji: '☕',
+        },
+        {
+          name: 'Jeff',
+          emoji: '🙋',
+        },
+      ]
+    }),
+  }
+</script>
