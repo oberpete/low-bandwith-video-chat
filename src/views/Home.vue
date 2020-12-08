@@ -59,6 +59,17 @@
         </v-card>
       </v-col>
     </v-row>
+
+     <v-row class="mx-6 my-2" v-for="(feedItem, index) in users" v-bind:key="index">
+      <v-col cols="12" class="mt-8">
+        <v-card class="mx-auto" max-width="344">
+            <div>Key: {{ feedItem['.key'] }}</div>
+            <p class="display-1 text--primary">
+              {{ feedItem.presentEmoji }}
+            </p>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -67,6 +78,10 @@ import '@tensorflow/tfjs'
 import * as tmImage from "@teachablemachine/image"
 import Peers from '../components/Peers.vue'
 import Chat from '../components/Chat.vue'
+import {
+    mapState
+  } from 'vuex'
+
 export default {
   components: {
      Peers, Chat
@@ -145,6 +160,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['users']),
     classWithHighestProbability: function() {
       let resultIndex = 0
       for(let i = 0; i < this.predictions.length; i++){
@@ -154,6 +170,7 @@ export default {
       }
       return resultIndex
     },
+    
   }
 }
 </script>

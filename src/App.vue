@@ -42,5 +42,9 @@ export default {
   data: () => ({
     //
   }),
+
+  created() {
+    this.$store.dispatch('bindUsers')
+  },
 };
 </script>
