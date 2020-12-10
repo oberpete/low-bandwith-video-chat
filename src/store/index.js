@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { firebaseAction } from 'vuexfire'
+import { vuexfireMutations, firebaseAction } from 'vuexfire'
 import { db } from '@/store/db'
 
 Vue.use(Vuex)
@@ -10,12 +10,14 @@ export default new Vuex.Store({
     users: []
   },
   mutations: {
+    ...vuexfireMutations,
   },
   actions: {
     bindUsers: firebaseAction(({ bindFirebaseRef }) => {
       // return the promise returned by `bindFirebaseRef`
       console.log('users')
-      return bindFirebaseRef('users', db.ref('items'))
+      bindFirebaseRef('users', db.ref('users'))
+      return 
     }),
     bindItems: firebaseAction(({ bindFirebaseRef }) => {
       // return the promise returned by `bindFirebaseRef`
