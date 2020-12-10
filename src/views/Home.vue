@@ -27,9 +27,15 @@
                 <v-card-text>
                 <v-avatar size="150" color="grey lighten-1">
                   <p class="text-h1">
-                    {{getEmoji(predictions[classWithHighestProbability].className)}}
+                    {{getEmoji(predictions[classWithHighestProbability].className) }}
                   </p>
                 </v-avatar>
+                <button
+                    right
+                    class="reply--button justify-right v-btn v-btn--contained theme--light v-size--default my-auto ml-3 mt-2" 
+                    @click.prevent="setNewEmoji">
+                    <i aria-hidden="true" class="v-icon notranslate mr-1 mdi mdi-send theme--light primary--text" style="font-size: 20px;"> </i>Change Emoji
+                </button>
                 </v-card-text>
               </v-card>
             </v-col>
@@ -66,6 +72,22 @@
             <div>Key: {{ feedItem['.key'] }}</div>
             <p class="display-1 text--primary">
               {{ feedItem.presentEmoji }}
+            </p>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-card class="mx-auto" max-width="344">
+            <div>User Emojis</div>
+            <p class="display-1 text--primary">
+              PresentEmoji: {{ this.presentEmoji }}
+            </p>
+            <p class="display-1 text--primary">
+              NotPresentEmoji: {{ this.notPresentEmoji }}
+            </p>
+            <p class="display-1 text--primary">
+              handRaisedEmoji: {{ this.handRaisedEmoji }}
             </p>
         </v-card>
       </v-col>
@@ -149,18 +171,24 @@ export default {
     getEmoji: function(className) {
       switch (className) {
         case 'present':
-          return '👩‍💼'
+          return self.presentEmoji
         case 'not present':
-          return '☕'
+          return self.notPresentEmoji
         case 'hand raised':
-          return '🙋'
+          return self.handRaisedEmoji
         default:
           return 'mdi-exclamation-thick'
       }
-    }
+    },
+    setNewEmoji: function() {
+      this.$store.commit('setPresentEmoji', '🥐')
+    },
   },
   computed: {
     ...mapState(['users']),
+    ...mapState(['notPresentEmoji']),
+    ...mapState(['handRaisedEmoji']),
+    ...mapState(['presentEmoji']),
     classWithHighestProbability: function() {
       let resultIndex = 0
       for(let i = 0; i < this.predictions.length; i++){

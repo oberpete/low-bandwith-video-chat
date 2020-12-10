@@ -7,10 +7,28 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    users: []
+    users: [],
+    presentEmoji: '😊',
+    notPresentEmoji: '🍺',
+    handRaisedEmoji: '💁🏼'
   },
+  getters: {
+    presentEmoji: (state) => {
+      return state.presentEmoji
+    },
+    notPresentEmoji: (state) => {
+      return state.notPresentEmoji
+    },
+    handRaisedEmoji: (state) => {
+      return state.handRaisedEmoji
+    },
+  },
+
   mutations: {
     ...vuexfireMutations,
+    setPresentEmoji (state, newEmoji) {
+      state.presentEmoji = newEmoji
+    }
   },
   actions: {
     bindUsers: firebaseAction(({ bindFirebaseRef }) => {
@@ -19,13 +37,6 @@ export default new Vuex.Store({
       bindFirebaseRef('users', db.ref('users'))
       return 
     }),
-    bindItems: firebaseAction(({ bindFirebaseRef }) => {
-      // return the promise returned by `bindFirebaseRef`
-      console.log('test')
-      bindFirebaseRef('users', db.ref('items'))
-      console.log(self.users)
-      return 
-  }),
   },
   modules: {
   }
