@@ -1,5 +1,11 @@
 <template>
   <v-container>
+    <v-dialog
+      v-model="dialog"
+      width="800"
+    >
+      <TutorialStepper></TutorialStepper>
+    </v-dialog>
     <v-row>
       <span class="text-h4 font-weight-bold primary--text">
         Very Important Meeting
@@ -100,16 +106,19 @@ import '@tensorflow/tfjs'
 import * as tmImage from "@teachablemachine/image"
 import Peers from '../components/Peers.vue'
 import Chat from '../components/Chat.vue'
+import TutorialStepper from '../components/TutorialStepper.vue'
+
 import {
     mapState
   } from 'vuex'
 
 export default {
   components: {
-     Peers, Chat
+     Peers, Chat, TutorialStepper
   },
   data() {
     return {
+      dialog: true,
       model: null,
       webcam: null,
       predictions: [],
@@ -169,6 +178,7 @@ export default {
       }
     },
     getEmoji: function(className) {
+      console.log(className)
       switch (className) {
         case 'present':
           return self.presentEmoji
