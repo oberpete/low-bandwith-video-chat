@@ -10,7 +10,9 @@ export default new Vuex.Store({
     users: [],
     presentEmoji: '😊',
     notPresentEmoji: '🍺',
-    handRaisedEmoji: '💁🏼'
+    handRaisedEmoji: '💁🏼',
+    thumbsUpEmoji: '👍',
+    heartSignEmoji: '♥',
   },
   getters: {
     presentEmoji: (state) => {
@@ -22,12 +24,30 @@ export default new Vuex.Store({
     handRaisedEmoji: (state) => {
       return state.handRaisedEmoji
     },
+    thumbsUpEmoji: (state) => {
+      return state.thumbsUpEmoji
+    },
+    heartSignEmoji: (state) => {
+      return state.heartSignEmoji
+    },
   },
 
   mutations: {
     ...vuexfireMutations,
     setPresentEmoji (state, newEmoji) {
       state.presentEmoji = newEmoji
+    },
+    setNotPresentEmoji (state, notPresentEmoji) {
+      state.notPresentEmoji = notPresentEmoji
+    },
+    setHandsRaisedEmoji (state, handRaisedEmoji) {
+      state.handRaisedEmoji = handRaisedEmoji
+    },
+    setThumbsUpEmoji (state, thumbsUpEmoji) {
+      state.thumbsUpEmoji = thumbsUpEmoji
+    },
+    setHeartSignEmoji (state, heartSignEmoji) {
+      state.heartSignEmoji = heartSignEmoji
     }
   },
   actions: {
