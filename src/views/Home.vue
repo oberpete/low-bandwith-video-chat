@@ -4,7 +4,7 @@
       v-model="dialog"
       width="800"
     >
-      <TutorialStepper></TutorialStepper>
+      <TutorialStepper @close-dialogue="dialog = false"></TutorialStepper>
     </v-dialog>
     <v-row>
       <span class="text-h4 font-weight-bold primary--text">
@@ -21,7 +21,7 @@
                   <v-icon>mdi-arrow-down-bold</v-icon>
                   That's me!
                 </v-card-title>
-                <div ref="webcam"></div>
+                <div class="webcam" ref="webcam"></div>
               </v-card>
             </v-col>
             <v-col cols="6" v-if="predictions.length > 0 && classWithHighestProbability >= 0" v-bind:key="predictions[classWithHighestProbability].className">
@@ -192,7 +192,7 @@ export default {
     },
     setNewEmoji: function() {
       this.$store.commit('setPresentEmoji', '🥐')
-    },
+    }
   },
   computed: {
     ...mapState(['users']),
@@ -215,5 +215,9 @@ export default {
 <style scoped>
 .opacity {
   opacity: 0.3;
+}
+.webcam {
+  width: 200;
+  height: 200;
 }
 </style>

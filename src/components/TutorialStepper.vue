@@ -18,7 +18,7 @@
 
         <v-btn color="primary" @click="e1 = 2">Continue</v-btn>
 
-        <v-btn text>Cancel</v-btn>
+        <v-btn text @click=sendCloseEvent>Cancel</v-btn>
       </v-stepper-content>
 
       <v-stepper-content step="2">
@@ -26,7 +26,7 @@
 
         <v-btn color="primary" @click="e1 = 3">Continue</v-btn>
 
-        <v-btn text>Cancel</v-btn>
+        <v-btn text @click=sendCloseEvent>Cancel</v-btn>
       </v-stepper-content>
 
       <v-stepper-content step="3">
