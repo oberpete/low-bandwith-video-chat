@@ -65,6 +65,7 @@
 <script>
 import '@tensorflow/tfjs'
 import * as tmImage from "@teachablemachine/image"
+import * as faceapi from 'face-api.js'
 import Peers from '../components/Peers.vue'
 import Chat from '../components/Chat.vue'
 export default {
@@ -76,6 +77,7 @@ export default {
       model: null,
       webcam: null,
       predictions: [],
+      expression: null,
       classWithHighestProb: -1,
       url: 'https://teachablemachine.withgoogle.com/models/erVKbrLsV/'
     }
@@ -90,6 +92,7 @@ export default {
     // or files from your local hard drive
     // Note: the pose library adds "tmImage" object to your window (window.tmImage)
     this.model = await tmImage.load(modelURL, metadataURL)
+    this.facemodel = await faceapi.nets.tinyFaceDetector.loadFromUri('/models')
     // Convenience function to setup a webcam
     /*this.webcam = new tmImage.Webcam(
       webcamContainer.width,
@@ -118,6 +121,10 @@ export default {
     },
     async predict() {
       this.predictions = await this.model.predict(this.webcam.canvas)
+      const detection = await faceapi.detectSingleFace(this.webcam.webcam, new faceapi.TinyFaceDetectorOptions()).withFaceExpressions()
+      // this is an WithFaceExpressions<WithFaceDetection<{}>> | undefined
+      // should contain information about the expression
+      console.log(detection)
     },
     getIcon: function(className) {
       switch (className) {
