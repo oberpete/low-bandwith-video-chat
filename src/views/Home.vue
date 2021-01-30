@@ -115,6 +115,8 @@ import {
 import {
   db
 } from '@/store/db'
+import { throttle } from 'lodash';
+
 
 export default {
   components: {
@@ -178,9 +180,15 @@ export default {
     },
     async predict() {
       this.predictions = await this.model.predict(this.webcam.canvas)
-      // how can we make sure that this is not fired every millisec?
       this.$store.commit('setCurrentState', this.predictions[this.classWithHighestProbability].className)
     },
+    updateStatusAsync: throttle(function() {
+        // how can we make sure that this is not fired every millisec?
+        db.ref('users').child(this.userKey).update({
+          status: this.predictions[this.classWithHighestProbability].className
+        })
+      }, 200),
+      
     getIcon: function(className) {
       switch (className) {
         case 'present':
