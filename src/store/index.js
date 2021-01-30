@@ -1,53 +1,85 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { vuexfireMutations, firebaseAction } from 'vuexfire'
-import { db } from '@/store/db'
+import {
+  vuexfireMutations,
+  firebaseAction
+} from 'vuexfire'
+import {
+  db
+} from '@/store/db'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     users: [],
-    presentEmoji: '😊',
-    notPresentEmoji: '🍺',
-    handRaisedEmoji: '💁🏼',
-    thumbsUpEmoji: '👍',
-    heartSignEmoji: '♥',
+    // presentEmoji: '🧑‍💼',
+    // notPresentEmoji: '🍺',
+    // handRaisedEmoji: '💁🏼',
+    // thumbsUpEmoji: '👍',
+    // heartSignEmoji: '♥',
+    emojiSkinColor: 'skinColorDefault',
+    emojiGender: 'female',
+    userKey: 'test',
+    status: 'present'
   },
   getters: {
     presentEmoji: (state) => {
-      return state.presentEmoji
+      return this.getPresentEmoji(state)
     },
     notPresentEmoji: (state) => {
-      return state.notPresentEmoji
+      return this.getPresentEmoji(state)
     },
     handRaisedEmoji: (state) => {
-      return state.handRaisedEmoji
+      return this.getPresentEmoji(state)
     },
     thumbsUpEmoji: (state) => {
-      return state.thumbsUpEmoji
+      return this.getPresentEmoji(state)
     },
     heartSignEmoji: (state) => {
-      return state.heartSignEmoji
+      return this.getPresentEmoji(state)
     },
   },
-
+  methods: {
+    getPresentEmoji: (state) => {
+      switch (state.emojiSkinColor) {
+        case 'skinColorDefault':
+          switch (state.emojiGender) {
+            case 'male':
+              return '👨‍💼'
+            case 'female':
+              return '👩‍💼'
+            case 'genderneutral':
+              return '👩‍💼'
+          }
+          break
+        case 'skinColor1':
+          switch (state.emojiGender) {
+            case 'male':
+              return '👨🏻‍💼'
+            case 'female':
+              return '👩🏻‍💼'
+            case 'genderneutral':
+              return '👩🏻‍💼'
+          }
+          break
+        case 'skinColor2':
+          switch (state.emojiGender) {
+            case 'male':
+              return '👨🏼‍💼'
+            case 'female':
+              return '👩🏼‍💼'
+            case 'genderneutral':
+              return '👩🏼‍💼'
+          }
+          break
+      }
+    }
+  },
   mutations: {
     ...vuexfireMutations,
-    setPresentEmoji (state, newEmoji) {
-      state.presentEmoji = newEmoji
-    },
-    setNotPresentEmoji (state, notPresentEmoji) {
-      state.notPresentEmoji = notPresentEmoji
-    },
-    setHandsRaisedEmoji (state, handRaisedEmoji) {
-      state.handRaisedEmoji = handRaisedEmoji
-    },
-    setThumbsUpEmoji (state, thumbsUpEmoji) {
-      state.thumbsUpEmoji = thumbsUpEmoji
-    },
-    setHeartSignEmoji (state, heartSignEmoji) {
-      state.heartSignEmoji = heartSignEmoji
+    setCurrentState(state, newUserState) {
+      state.status = newUserState
     }
   },
   actions: {
@@ -55,9 +87,27 @@ export default new Vuex.Store({
       // return the promise returned by `bindFirebaseRef`
       console.log('users')
       bindFirebaseRef('users', db.ref('users'))
-      return 
+      return
     }),
+    deleteUser: firebaseAction((context, user) => {
+      db.ref('users').child(user.userKey).remove()
+    }),
+    addNewUser: firebaseAction((context, user) => {
+     
+      db.ref('users').child(user.userKey).update({
+        nickname: user.nickname,
+        emojiColor: user.emojiColor,
+        emojiGender: user.emojiGender,
+      })
+    }),
+    updateUserSettings: firebaseAction((context, nickname, emojiColor, emojiGender) => {
+      db.ref('users/' + nickname).update({
+        nickname: nickname,
+        emojiColor: emojiColor,
+        emojiGender: emojiGender,
+      })
+    }),
+
   },
-  modules: {
-  }
+  modules: {}
 })

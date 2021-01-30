@@ -10,7 +10,7 @@
           </v-col>
           <v-col cols="8">
             <div class="text-h6 font-weight-bold primary--text">
-              {{ peer['.key'] }}
+              {{ peer['nickname'] }}
             </div>
             <div v-if="peer.statusMessage">
               {{ peer.statusMessage }}

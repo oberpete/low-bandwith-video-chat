@@ -3,8 +3,9 @@
     <v-dialog
       v-model="dialog"
       width="800"
+      persistent
     >
-      <TutorialStepper @close-dialogue="dialog = false"></TutorialStepper>
+      <TutorialStepper @close-dialogue="handleCloseDialogue"></TutorialStepper>
     </v-dialog>
     <v-row>
       <span class="text-h4 font-weight-bold primary--text">
@@ -111,6 +112,9 @@ import TutorialStepper from '../components/TutorialStepper.vue'
 import {
     mapState
   } from 'vuex'
+import {
+  db
+} from '@/store/db'
 
 export default {
   components: {
@@ -123,7 +127,11 @@ export default {
       webcam: null,
       predictions: [],
       classWithHighestProb: -1,
-      url: 'https://teachablemachine.withgoogle.com/models/erVKbrLsV/'
+      url: 'https://teachablemachine.withgoogle.com/models/erVKbrLsV/',
+      nickname: "",
+      emojiColor: "",
+      emojiGender: "",
+      userKey: "",
     }
   },
   async mounted() {
@@ -153,6 +161,12 @@ export default {
     
     window.requestAnimationFrame(this.loop)
   },
+
+  created() {
+    document.addEventListener('beforeunload', this.leaving);
+    window.addEventListener('beforeunload', this.leaving)
+  },
+
   methods: {
     async loop() {
       var that = this
@@ -164,6 +178,8 @@ export default {
     },
     async predict() {
       this.predictions = await this.model.predict(this.webcam.canvas)
+      // how can we make sure that this is not fired every millisec?
+      this.$store.commit('setCurrentState', this.predictions[this.classWithHighestProbability].className)
     },
     getIcon: function(className) {
       switch (className) {
@@ -192,7 +208,20 @@ export default {
     },
     setNewEmoji: function() {
       this.$store.commit('setPresentEmoji', '🥐')
-    }
+    },
+    handleCloseDialogue: function({nickname, emojiColor, emojiGender}) {
+      this.nickname = nickname
+      this.emojiColor = emojiColor
+      this.emojiGender = emojiGender
+      this.dialog = false
+      let userKey = db.ref('users').push().getKey()
+      this.userKey = userKey
+      this.$store.dispatch('addNewUser', {nickname, emojiColor, emojiGender, userKey})
+    },
+    leaving: function() {
+      let userKey = this.userKey
+      this.$store.dispatch('deleteUser', {userKey})
+    },
   },
   computed: {
     ...mapState(['users']),
