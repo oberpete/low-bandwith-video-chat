@@ -21,10 +21,18 @@ export default new Vuex.Store({
     emojiSkinColor: 'skinColorDefault',
     emojiGender: 'female',
     userKey: 'test',
-    status: 'present'
+    predictions: [],
+    currentPrediction: 'present',
+    emojiIdentity: {
+      present: '👨‍💼',
+      notPresent: '🍺',
+      handRaised: '💁🏼',
+      thumbsUp: '👍',
+      heart: '♥'
+    }
   },
   getters: {
-    presentEmoji: (state) => {
+    /* presentEmoji: (state) => {
       return this.getPresentEmoji(state)
     },
     notPresentEmoji: (state) => {
@@ -38,10 +46,22 @@ export default new Vuex.Store({
     },
     heartSignEmoji: (state) => {
       return this.getPresentEmoji(state)
-    },
+    }, */
+    getEmojiByCurrentPrediction: (state) => {
+      switch (state.currentPrediction) {
+        case 'present':
+          return state.emojiIdentity.present
+        case 'not present':
+          return state.emojiIdentity.notPresent
+        case 'hand raised':
+          return state.emojiIdentity.handRaised
+        default: 
+          return state.emojiIdentity.present
+      }
+    }
   },
   methods: {
-    getPresentEmoji: (state) => {
+    /*getPresentEmoji: (state) => {
       switch (state.emojiSkinColor) {
         case 'skinColorDefault':
           switch (state.emojiGender) {
@@ -74,12 +94,15 @@ export default new Vuex.Store({
           }
           break
       }
-    }
+    }*/
   },
   mutations: {
     ...vuexfireMutations,
-    setCurrentState(state, newUserState) {
-      state.status = newUserState
+    setPredictions(state, predictions) {
+      state.predictions = predictions
+    },
+    setCurrentPrediction(state, currentPrediction) {
+      state.currentPrediction = currentPrediction
     }
   },
   actions: {

@@ -14,45 +14,11 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-card color="grey lighten-2" rounded="lg">
-          <v-row>
-            <v-col cols="6">
-              <v-card color="transparent" rounded="lg" outlined class="margin" align="center">
-                <v-card-title class="primary--text text-subtitle-1 font-weight-bold">
-                  <v-icon>mdi-arrow-down-bold</v-icon>
-                  That's me!
-                </v-card-title>
-                <div class="webcam" ref="webcam"></div>
-              </v-card>
-            </v-col>
-            <v-col cols="6" v-if="predictions.length > 0 && classWithHighestProbability >= 0" v-bind:key="predictions[classWithHighestProbability].className">
-              <v-card color="transparent" outlined height="100%" align="center">
-                <v-card-title class="primary--text text-subtitle-1 font-weight-bold">
-                  <v-icon>mdi-arrow-down-bold</v-icon>
-                  That's what my peers see!
-                </v-card-title>
-                <v-card-text>
-                <v-avatar size="150" color="grey lighten-1">
-                  <p class="text-h1">
-                    {{getEmoji(predictions[classWithHighestProbability].className) }}
-                  </p>
-                </v-avatar>
-                <button
-                    right
-                    class="reply--button justify-right v-btn v-btn--contained theme--light v-size--default my-auto ml-3 mt-2" 
-                    @click.prevent="setNewEmoji">
-                    <i aria-hidden="true" class="v-icon notranslate mr-1 mdi mdi-send theme--light primary--text" style="font-size: 20px;"> </i>Change Emoji
-                </button>
-                </v-card-text>
-              </v-card>
-            </v-col>
-          </v-row>
-          
-        </v-card>
-        <Peers />
-      </v-col>
-      <v-col v-if="predictions.length > 0 && classWithHighestProbability >= 0" v-bind:key="predictions[classWithHighestProbability].className">
+        <WebcamAndPrediction />
         <Chat />
+      </v-col>
+      <v-col>
+        <Peers />
       </v-col>
     </v-row>
     <v-row v-if="predictions" class="opacity">
@@ -84,7 +50,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col>
+      <!-- <v-col>
         <v-card class="mx-auto" max-width="344">
             <div>User Emojis</div>
             <p class="display-1 text--primary">
@@ -97,17 +63,18 @@
               handRaisedEmoji: {{ this.handRaisedEmoji }}
             </p>
         </v-card>
-      </v-col>
+      </v-col> -->
     </v-row>
   </v-container>
 </template>
 
 <script>
 import '@tensorflow/tfjs'
-import * as tmImage from "@teachablemachine/image"
+
 import Peers from '../components/Peers.vue'
 import Chat from '../components/Chat.vue'
 import TutorialStepper from '../components/TutorialStepper.vue'
+import WebcamAndPrediction from '../components/WebcamAndPrediction.vue'
 
 import {
     mapState
@@ -115,53 +82,22 @@ import {
 import {
   db
 } from '@/store/db'
-import { throttle } from 'lodash';
 
 
 export default {
   components: {
-     Peers, Chat, TutorialStepper
+     Peers, Chat, TutorialStepper, WebcamAndPrediction
   },
   data() {
     return {
       dialog: true,
       model: null,
-      webcam: null,
-      predictions: [],
-      classWithHighestProb: -1,
       url: 'https://teachablemachine.withgoogle.com/models/erVKbrLsV/',
       nickname: "",
       emojiColor: "",
       emojiGender: "",
       userKey: "",
     }
-  },
-  async mounted() {
-    const modelURL = `${this.url}model.json`
-    const metadataURL = `${this.url}metadata.json`
-    const webcamContainer = this.$refs.webcam
-    const flip = true // whether to flip the webcam
-    // load the model and metadata
-    // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
-    // or files from your local hard drive
-    // Note: the pose library adds "tmImage" object to your window (window.tmImage)
-    this.model = await tmImage.load(modelURL, metadataURL)
-    // Convenience function to setup a webcam
-    /*this.webcam = new tmImage.Webcam(
-      webcamContainer.width,
-      webcamContainer.height,
-      flip
-    )*/ // width, height, flip
-    this.webcam = new tmImage.Webcam(
-      200,
-      200,
-      flip
-    ) 
-    await this.webcam.setup() // request access to the webcam
-    await this.webcam.play()
-    webcamContainer.appendChild(this.webcam.canvas)
-    
-    window.requestAnimationFrame(this.loop)
   },
 
   created() {
@@ -170,24 +106,7 @@ export default {
   },
 
   methods: {
-    async loop() {
-      var that = this
-      that.webcam.update()
-      await this.predict()
-      // timeout could be increased to improve performance
-      setTimeout(function(){ window.requestAnimationFrame(that.loop) }, 300);
-      
-    },
-    async predict() {
-      this.predictions = await this.model.predict(this.webcam.canvas)
-      this.$store.commit('setCurrentState', this.predictions[this.classWithHighestProbability].className)
-    },
-    updateStatusAsync: throttle(function() {
-        // how can we make sure that this is not fired every millisec?
-        db.ref('users').child(this.userKey).update({
-          status: this.predictions[this.classWithHighestProbability].className
-        })
-      }, 200),
+
       
     getIcon: function(className) {
       switch (className) {
@@ -197,19 +116,6 @@ export default {
           return 'mdi-close-thick'
         case 'hand raised':
           return 'mdi-hand'
-        default:
-          return 'mdi-exclamation-thick'
-      }
-    },
-    getEmoji: function(className) {
-      console.log(className)
-      switch (className) {
-        case 'present':
-          return self.presentEmoji
-        case 'not present':
-          return self.notPresentEmoji
-        case 'hand raised':
-          return self.handRaisedEmoji
         default:
           return 'mdi-exclamation-thick'
       }
@@ -232,10 +138,8 @@ export default {
     },
   },
   computed: {
-    ...mapState(['users']),
-    ...mapState(['notPresentEmoji']),
-    ...mapState(['handRaisedEmoji']),
-    ...mapState(['presentEmoji']),
+    /*...mapState(['users', 'notPresentEmoji', 'handRaisedEmoji', 'presentEmoji', 'predictions']),*/
+    ...mapState(['users', 'predictions']),
     classWithHighestProbability: function() {
       let resultIndex = 0
       for(let i = 0; i < this.predictions.length; i++){
@@ -244,8 +148,7 @@ export default {
         }
       }
       return resultIndex
-    },
-    
+    }
   }
 }
 </script>
