@@ -21,7 +21,7 @@
             <p class="text-h1">
               {{ getEmojiByCurrentPrediction() }}
             </p>
-            <Emoji />
+            <Emoji/>
           </v-avatar>
           <button
               right
@@ -56,7 +56,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['users', 'predictions', 'currentPrediction']),
+    ...mapState(['users', 'predictions', 'currentPrediction', 'userKey']),
     classWithHighestProbability: function() {
       let resultIndex = 0
       for(let i = 0; i < this.predictions.length; i++){
@@ -72,22 +72,29 @@ export default {
     ...mapMutations(['setPredictions']),
     async loop() {
       var that = this
-      that.webcam.update()
-      await this.predict()
+      console.log(this.userKey)
+      // check if user initialization finished
+      if (this.userKey) {
+        that.webcam.update()
+        await this.predict()
+      }
       // timeout could be increased to improve performance
-      setTimeout(function(){ window.requestAnimationFrame(that.loop) }, 300);
+      setTimeout(function(){ window.requestAnimationFrame(that.loop) }, 1000);
       
     },
     async predict() {
       this.setPredictions(await this.model.predict(this.webcam.canvas))
       this.$store.commit('setCurrentPrediction', this.predictions[this.classWithHighestProbability].className)
+      this.updateStatusAsync()
 
     },
     updateStatusAsync: throttle(function() {
-        // how can we make sure that this is not fired every millisec?
-        db.ref('users').child(this.userKey).update({
-          status: this.predictions[this.classWithHighestProbability].className
-        })
+      console.log('userKey', this.userKey)
+      
+      // how can we make sure that this is not fired every millisec?
+      db.ref('users').child(this.userKey).update({
+        status: this.predictions[this.classWithHighestProbability].className
+      })
     }, 200),
   },
   async mounted() {

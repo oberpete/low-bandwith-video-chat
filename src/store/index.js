@@ -20,7 +20,7 @@ export default new Vuex.Store({
     // heartSignEmoji: '♥',
     emojiSkinColor: 'skinColorDefault',
     emojiGender: 'female',
-    userKey: 'test',
+    userKey: '',
     predictions: [],
     currentPrediction: 'present',
     emojiIdentity: {
@@ -103,6 +103,9 @@ export default new Vuex.Store({
     },
     setCurrentPrediction(state, currentPrediction) {
       state.currentPrediction = currentPrediction
+    },
+    setUserKey(state, userKey) {
+      state.userKey = userKey
     }
   },
   actions: {
@@ -116,12 +119,13 @@ export default new Vuex.Store({
       db.ref('users').child(user.userKey).remove()
     }),
     addNewUser: firebaseAction((context, user) => {
-     
       db.ref('users').child(user.userKey).update({
         nickname: user.nickname,
         emojiColor: user.emojiColor,
         emojiGender: user.emojiGender,
+        status: 'present'
       })
+
     }),
     updateUserSettings: firebaseAction((context, nickname, emojiColor, emojiGender) => {
       db.ref('users/' + nickname).update({

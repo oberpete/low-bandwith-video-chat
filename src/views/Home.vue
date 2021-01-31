@@ -77,7 +77,7 @@ import TutorialStepper from '../components/TutorialStepper.vue'
 import WebcamAndPrediction from '../components/WebcamAndPrediction.vue'
 
 import {
-    mapState
+    mapState, mapMutations
   } from 'vuex'
 import {
   db
@@ -106,7 +106,7 @@ export default {
   },
 
   methods: {
-
+    ...mapMutations(['setUserKey']),
       
     getIcon: function(className) {
       switch (className) {
@@ -131,6 +131,7 @@ export default {
       let userKey = db.ref('users').push().getKey()
       this.userKey = userKey
       this.$store.dispatch('addNewUser', {nickname, emojiColor, emojiGender, userKey})
+      this.setUserKey(userKey)
     },
     leaving: function() {
       let userKey = this.userKey
