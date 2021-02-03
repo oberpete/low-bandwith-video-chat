@@ -1,34 +1,26 @@
 <template>
-  <v-card color="grey lighten-2" rounded="lg">
+  <v-card color="grey lighten-2" tile>
     <v-row>
       <v-col cols="6">
         <v-card color="transparent" rounded="lg" outlined class="margin" align="center">
-          <v-card-title class="primary--text text-subtitle-1 font-weight-bold">
-            <v-icon>mdi-arrow-down-bold</v-icon>
-            That's me!
-          </v-card-title>
-
+          <v-card-text>
             <div>
               <div v-if="!webcamSetupFinished">
                 <v-icon x-large>mdi-webcam</v-icon>
                 <p class="text-body-2 grey--text text--darken-3">Please enable your webcam to use Low-Bandwith-Video-Chat.</p>
                 <v-progress-circular color="primary" indeterminate v-if="webcamIsLoading"></v-progress-circular>
               </div>
-              <v-avatar color="grey lighten-1" size="150" v-if="webcamSetupFinished">
+              <v-avatar color="linenLighter" size="150" v-if="webcamSetupFinished">
                 <div ref="webcam" class="webcam"></div>
               </v-avatar>
             </div>
-
+          </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="6">
         <v-card color="transparent" outlined height="100%" align="center">
-          <v-card-title class="primary--text text-subtitle-1 font-weight-bold">
-            <v-icon>mdi-arrow-down-bold</v-icon>
-            That's what my peers see!
-          </v-card-title>
           <v-card-text>
-          <v-avatar size="150" color="grey lighten-1">
+          <v-avatar size="155" color="linen">
             <Emoji :status="currentPrediction" :gender="emojiIdentity.gender" :skinTone="emojiIdentity.skinTone" size="xl"/>
           </v-avatar>
           </v-card-text>

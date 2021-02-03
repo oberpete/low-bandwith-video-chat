@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined>
+  <v-card outlined class="mt-4">
     <v-card-title class="pb-0">
       <v-icon color="primary" class="mr-2">mdi-message</v-icon>
       <span class="primary--text font-weight-bold">Chat</span>

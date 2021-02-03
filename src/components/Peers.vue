@@ -1,25 +1,24 @@
 <template>
+  <v-card outlined class="pa-2">
   <v-row no-gutters>
-    <v-col cols="6" v-for="peer in users" v-bind:key="peer.name" class="pr-2 pb-2">
-      <v-card tile color="primaryAccent3" elevation="0">
+    <v-col cols="4" v-for="peer in users" v-bind:key="peer.name" class="pa-1">
+      <v-card class="linenLighter pl-3" elevation="0" outlined>
         <v-row>
           <v-col cols="4" align="center">
-            <span class="text-h2">
-              <Emoji :status="peer.status" :gender="peer.emojiColor" :skinTone="peer.emojiGender" size="md"/>
-            </span>
+            <v-avatar size="60" color="linenLighter">
+              <Emoji class="mt-3" :status="peer.status" :gender="peer.emojiGender" :skinTone="peer.emojiColor" size="md"/>
+            </v-avatar>
           </v-col>
           <v-col cols="8">
-            <div class="text-h6 font-weight-bold primary--text">
+            <div class="text-h6 font-weight-bold primary--text mt-3">
               {{ peer['nickname'] }}
-            </div>
-            <div v-if="peer.statusMessage">
-              {{ peer.statusMessage }}
             </div>
           </v-col>
         </v-row>
       </v-card>
     </v-col>
   </v-row>
+  </v-card>
 </template>
 
 <script>
@@ -30,21 +29,6 @@
     components: {Emoji},
     computed: {
       ...mapState(['users'])
-    },
-
-    methods: {
-      getEmojiForPeerAndStatus: function(peer) {
-      switch (peer.status) {
-        case 'present':
-          return peer.presentEmoji
-        case 'notPresent':
-          return peer.notPresentEmoji
-        case 'handRaised':
-          return peer.handRaisedEmoji
-        default:
-          return 'mdi-exclamation-thick'
-      }
-    }
     }
   }
   

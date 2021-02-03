@@ -14,11 +14,11 @@
       </span>
     </v-row>
     <v-row>
-      <v-col>
+      <v-col cols="12" md="5">
         <WebcamAndPrediction />
         <Chat />
       </v-col>
-      <v-col>
+      <v-col cols="12" md="7">
         <Peers />
       </v-col>
     </v-row>
