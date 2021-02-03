@@ -58,40 +58,7 @@ export default new Vuex.Store({
     }
   },
   methods: {
-    /*getPresentEmoji: (state) => {
-      switch (state.emojiSkinColor) {
-        case 'skinColorDefault':
-          switch (state.emojiGender) {
-            case 'male':
-              return '👨‍💼'
-            case 'female':
-              return '👩‍💼'
-            case 'genderneutral':
-              return '👩‍💼'
-          }
-          break
-        case 'skinColor1':
-          switch (state.emojiGender) {
-            case 'male':
-              return '👨🏻‍💼'
-            case 'female':
-              return '👩🏻‍💼'
-            case 'genderneutral':
-              return '👩🏻‍💼'
-          }
-          break
-        case 'skinColor2':
-          switch (state.emojiGender) {
-            case 'male':
-              return '👨🏼‍💼'
-            case 'female':
-              return '👩🏼‍💼'
-            case 'genderneutral':
-              return '👩🏼‍💼'
-          }
-          break
-      }
-    }*/
+   
   },
   mutations: {
     ...vuexfireMutations,
@@ -103,6 +70,11 @@ export default new Vuex.Store({
     },
     setUserKey(state, userKey) {
       state.userKey = userKey
+    },
+    setEmojiIdentity(state, {emojiGender, emojiColor}) {
+      console.log(emojiGender, emojiColor)
+      state.emojiIdentity.gender = emojiGender
+      state.emojiIdentity.skinTone = emojiColor
     }
   },
   actions: {

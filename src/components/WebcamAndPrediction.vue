@@ -7,10 +7,21 @@
             <v-icon>mdi-arrow-down-bold</v-icon>
             That's me!
           </v-card-title>
-          <div class="webcam" ref="webcam"></div>
+
+            <div>
+              <div v-if="!webcamSetupFinished">
+                <v-icon x-large>mdi-webcam</v-icon>
+                <p class="text-body-2 grey--text text--darken-3">Please enable your webcam to use Low-Bandwith-Video-Chat.</p>
+                <v-progress-circular color="primary" indeterminate v-if="webcamIsLoading"></v-progress-circular>
+              </div>
+              <v-avatar color="grey lighten-1" size="150" v-if="webcamSetupFinished">
+                <div ref="webcam" class="webcam"></div>
+              </v-avatar>
+            </div>
+
         </v-card>
       </v-col>
-      <v-col cols="6" v-if="predictions.length > 0 && classWithHighestProbability >= 0" v-bind:key="predictions[classWithHighestProbability].className">
+      <v-col cols="6">
         <v-card color="transparent" outlined height="100%" align="center">
           <v-card-title class="primary--text text-subtitle-1 font-weight-bold">
             <v-icon>mdi-arrow-down-bold</v-icon>
@@ -18,17 +29,8 @@
           </v-card-title>
           <v-card-text>
           <v-avatar size="150" color="grey lighten-1">
-            <p class="text-h1">
-              {{ getEmojiByCurrentPrediction() }}
-            </p>
             <Emoji :status="currentState" :gender="emojiIdentity.gender" :skinTone="emojiIdentity.skinTone" size="xl"/>
           </v-avatar>
-          <button
-              right
-              class="reply--button justify-right v-btn v-btn--contained theme--light v-size--default my-auto ml-3 mt-2" 
-              @click.prevent="setNewEmoji">
-              <i aria-hidden="true" class="v-icon notranslate mr-1 mdi mdi-send theme--light primary--text" style="font-size: 20px;"> </i>Change Emoji
-          </button>
           </v-card-text>
         </v-card>
       </v-col>
@@ -44,7 +46,7 @@ import {
   db
 } from '@/store/db'
 import { throttle } from 'lodash';
-import { mapGetters, mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 
 export default {
   components: {Emoji},
@@ -52,7 +54,16 @@ export default {
     return {
       model: null,
       webcam: null,
+      webcamIsLoading: false,
       url: 'https://teachablemachine.withgoogle.com/models/erVKbrLsV/',
+      webcamSetupFinished: false
+    }
+  },
+  watch: {
+    userKey () {
+      // onboarding and initialization over when user key set
+      // request webcam
+      this.requestWebcam()
     }
   },
   computed: {
@@ -80,8 +91,33 @@ export default {
     },
   },
   methods: {
-    ...mapGetters(['getEmojiByCurrentPrediction']),
     ...mapMutations(['setPredictions']),
+    async requestWebcam() {
+      var that = this
+      const modelURL = `${this.url}model.json`
+      const metadataURL = `${this.url}metadata.json`
+      
+      // flip camera b/c teachable machine camera was flipped as well
+      const flip = true 
+
+      this.model = await tmImage.load(modelURL, metadataURL)
+
+      this.webcam = new tmImage.Webcam(
+        150,
+        150,
+        flip
+      ) 
+      await this.webcam.setup() // request access to the webcam
+      this.webcamIsLoading = true
+      await this.webcam.play()
+      this.webcamSetupFinished = true
+      
+      setTimeout(function(){ 
+        const webcamContainer = that.$refs.webcam
+        webcamContainer.appendChild(that.webcam.canvas)
+      }, 1000);
+      window.requestAnimationFrame(this.loop)
+    },
     async loop() {
       var that = this
       console.log(this.userKey)
@@ -91,7 +127,7 @@ export default {
         await this.predict()
       }
       // timeout could be increased to improve performance
-      setTimeout(function(){ window.requestAnimationFrame(that.loop) }, 1000);
+      setTimeout(function(){ window.requestAnimationFrame(that.loop) }, 500);
       
     },
     async predict() {
@@ -108,33 +144,6 @@ export default {
         status: this.predictions[this.classWithHighestProbability].className
       })
     }, 200),
-  },
-  async mounted() {
-    const modelURL = `${this.url}model.json`
-    const metadataURL = `${this.url}metadata.json`
-    const webcamContainer = this.$refs.webcam
-    const flip = true // whether to flip the webcam
-    // load the model and metadata
-    // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
-    // or files from your local hard drive
-    // Note: the pose library adds "tmImage" object to your window (window.tmImage)
-    this.model = await tmImage.load(modelURL, metadataURL)
-    // Convenience function to setup a webcam
-    /*this.webcam = new tmImage.Webcam(
-      webcamContainer.width,
-      webcamContainer.height,
-      flip
-    )*/ // width, height, flip
-    this.webcam = new tmImage.Webcam(
-      200,
-      200,
-      flip
-    ) 
-    await this.webcam.setup() // request access to the webcam
-    await this.webcam.play()
-    webcamContainer.appendChild(this.webcam.canvas)
-    
-    window.requestAnimationFrame(this.loop)
   }
 }
 </script>

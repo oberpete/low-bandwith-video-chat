@@ -39,7 +39,7 @@
         </v-card>
       </v-col>
     </v-row>
-
+    <!-- 
      <v-row class="mx-6 my-2" v-for="(feedItem, index) in users" v-bind:key="index">
       <v-col cols="12" class="mt-8">
         <v-card class="mx-auto" max-width="344">
@@ -51,7 +51,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <!-- <v-col>
+      <v-col>
         <v-card class="mx-auto" max-width="344">
             <div>User Emojis</div>
             <p class="display-1 text--primary">
@@ -64,8 +64,8 @@
               handRaisedEmoji: {{ this.handRaisedEmoji }}
             </p>
         </v-card>
-      </v-col> -->
-    </v-row>
+      </v-col> 
+    </v-row> -->
   </v-container>
 </template>
 
@@ -108,7 +108,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['setUserKey']),
+    ...mapMutations(['setUserKey', 'setEmojiIdentity']),
       
     getIcon: function(className) {
       switch (className) {
@@ -133,6 +133,8 @@ export default {
       let userKey = db.ref('users').push().getKey()
       this.userKey = userKey
       this.$store.dispatch('addNewUser', {nickname, emojiColor, emojiGender, userKey})
+      console.log(emojiColor, emojiGender)
+      this.setEmojiIdentity({emojiGender, emojiColor})
       this.setUserKey(userKey)
     },
     leaving: function() {

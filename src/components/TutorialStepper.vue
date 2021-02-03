@@ -24,20 +24,20 @@
           src="https://us.123rf.com/450wm/microone/microone1907/microone190700323/128173861-stock-vector-video-conference-people-group-on-computer-screen-taking-with-colleague-video-conferencing-and-online.jpg?ver=6"
           max-height="250" />
 
-        <v-btn color="primary" @click="e1 = 2">Continue</v-btn>
+        <v-btn tabindex="0" color="primary" @click="e1 = 2">Continue</v-btn>
 
         <v-btn text @click="sendCloseEvent" :disabled="newUser" >Cancel</v-btn>
       </v-stepper-content>
 
       <v-stepper-content step="2">
         To make sure that others recognize you please set your unique nickname for this chat!
-        <v-form v-model="valid">
+        <v-form v-on:submit.prevent v-model="valid">
           <v-container>
             <v-text-field v-model="nickname" :rules="nameRules" label="Nickname" required></v-text-field>
           </v-container>
         </v-form>
 
-        <v-btn color="primary" @click="e1 = 3" :disabled="!valid">Continue</v-btn>
+        <v-btn tabindex="0" color="primary" @click="e1 = 3" :disabled="!valid">Continue</v-btn>
 
         <v-btn text @click="sendCloseEvent" :disabled="newUser">Cancel</v-btn>
       </v-stepper-content>
@@ -54,18 +54,18 @@
                   Color:
                   <v-radio-group v-model="emojiColor" column>
                     <v-radio label="👋" color="yellow" value="skinColorDefault"></v-radio>
-                    <v-radio label="👋🏻" color="red darken-3" value="skinColor1"></v-radio>
-                    <v-radio label="👋🏼" color="indigo" value="skinColor2"></v-radio>
-                    <v-radio label="👋🏽" color="indigo darken-3" value="skinColor3"></v-radio>
-                    <v-radio label="👋🏾" color="orange" value="skinColor4"></v-radio>
-                    <v-radio label="👋🏿" color="orange darken-3" value="skinColor5"></v-radio>
+                    <v-radio label="👋🏻" color="red darken-3" value="light"></v-radio>
+                    <v-radio label="👋🏼" color="indigo" value="medium-light"></v-radio>
+                    <v-radio label="👋🏽" color="indigo darken-3" value="medium"></v-radio>
+                    <v-radio label="👋🏾" color="orange" value="medium-dark"></v-radio>
+                    <v-radio label="👋🏿" color="orange darken-3" value="dark"></v-radio>
                   </v-radio-group>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                   Gender:
                   <v-radio-group v-model="emojiGender" column>
-                    <v-radio label="👩" color="red" value="male"></v-radio>
-                    <v-radio label="👨" color="indigo" value="female"></v-radio>
+                    <v-radio label="👩" color="red" value="female"></v-radio>
+                    <v-radio label="👨" color="indigo" value="male"></v-radio>
                     <v-radio label="👋🏽" color="indigo darken-3" value="genderneutral"></v-radio>
                   </v-radio-group>
                 </v-col>
@@ -73,7 +73,7 @@
             </v-container>
           </v-card-text>
         </v-card>
-        <v-btn color="primary" @click="sendCloseEvent">Continue</v-btn>
+        <v-btn tabindex="0" color="primary" @click="sendCloseEvent">Continue</v-btn>
 
         <v-btn text @click="sendCloseEvent" :disabled="newUser">Cancel</v-btn>
       </v-stepper-content>
