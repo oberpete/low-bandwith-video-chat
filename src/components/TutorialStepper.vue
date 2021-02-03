@@ -1,11 +1,11 @@
 <template>
-  <v-stepper v-model="e1">
+  <v-stepper v-model="step">
     <v-stepper-header>
-      <v-stepper-step :complete="e1 > 1" step="1">Introduction</v-stepper-step>
+      <v-stepper-step :complete="step > 1" step="1">Introduction</v-stepper-step>
 
       <v-divider></v-divider>
 
-      <v-stepper-step :complete="e1 > 2" step="2">Set your nickname</v-stepper-step>
+      <v-stepper-step :complete="step > 2" step="2">Set your nickname</v-stepper-step>
 
       <v-divider></v-divider>
 
@@ -24,7 +24,7 @@
           src="https://us.123rf.com/450wm/microone/microone1907/microone190700323/128173861-stock-vector-video-conference-people-group-on-computer-screen-taking-with-colleague-video-conferencing-and-online.jpg?ver=6"
           max-height="250" />
 
-        <v-btn tabindex="0" color="primary" @click="e1 = 2">Continue</v-btn>
+        <v-btn tabindex="0" color="primary" @click="step = 2">Continue</v-btn>
 
         <v-btn text @click="sendCloseEvent" :disabled="newUser" >Cancel</v-btn>
       </v-stepper-content>
@@ -37,7 +37,7 @@
           </v-container>
         </v-form>
 
-        <v-btn tabindex="0" color="primary" @click="e1 = 3" :disabled="!valid">Continue</v-btn>
+        <v-btn tabindex="0" color="primary" @click="step = 3" :disabled="!valid">Continue</v-btn>
 
         <v-btn text @click="sendCloseEvent" :disabled="newUser">Cancel</v-btn>
       </v-stepper-content>
@@ -66,7 +66,7 @@
                   <v-radio-group v-model="emojiGender" column>
                     <v-radio label="👩" color="red" value="female"></v-radio>
                     <v-radio label="👨" color="indigo" value="male"></v-radio>
-                    <v-radio label="👋🏽" color="indigo darken-3" value="genderneutral"></v-radio>
+                    <v-radio label="🧑" color="indigo darken-3" value="genderneutral"></v-radio>
                   </v-radio-group>
                 </v-col>
               </v-row>
@@ -85,17 +85,19 @@
   export default {
     data() {
       return {
-        e1: 1,
+        newUser: true,
+        step: 1,
         emojiColor: "skinColorDefault",
         emojiGender: "female",
         valid: false,
         nickname: "",
         nameRules: [v => !!v || "Nickname is required"],
-        newUser: true,
       };
     },
     methods: {
       sendCloseEvent: function () {
+        this.step = 2
+        this.newUser = false
         this.$emit("close-dialogue", {nickname: this.nickname, emojiColor: this.emojiColor, emojiGender: this.emojiGender});
       }
     }

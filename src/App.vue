@@ -22,6 +22,7 @@
       <v-btn
         target="_blank"
         text
+        @click="handleSettiingsClick"
       >
         <v-icon left>mdi-cog</v-icon>
         <span class="mr-2">Settings</span>
@@ -36,6 +37,10 @@
 
 <script>
 
+import {
+    mapMutations
+  } from 'vuex'
+
 export default {
   name: 'App',
 
@@ -46,5 +51,13 @@ export default {
   created() {
     this.$store.dispatch('bindUsers')
   },
+
+  methods: {
+    ...mapMutations(['setOpenDialog']),
+
+    handleSettiingsClick: function() {
+      this.setOpenDialog(true)
+    },
+  }
 };
 </script>

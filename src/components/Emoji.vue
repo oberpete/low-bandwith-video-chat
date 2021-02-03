@@ -40,6 +40,10 @@ export default {
           return this.raiseHandEmoji
         case 'present':
           return this.presentEmoji
+        case 'thumbs-up':
+          return this.thumbsUpEmoji
+        case 'heart':
+          return '❤️'
         case 'not-present':
           return '🍺'
         case 'no-camera':
@@ -162,6 +166,22 @@ export default {
             default:
               return '🙋'
           }
+      }
+    },
+    thumbsUpEmoji: function() {
+      switch (this.skinTone) {
+        case 'light':
+          return '👍🏻'
+        case 'medium-light':
+          return '👍🏼'
+        case 'medium':
+          return '👍🏽'
+        case 'medium-dark':
+          return '👍🏾'
+        case 'dark':
+          return '👍🏿'
+        default:
+          return '👍'
       }
     },
   },

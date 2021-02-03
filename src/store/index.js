@@ -22,6 +22,7 @@ export default new Vuex.Store({
     emojiGender: 'female',
     userKey: '',
     predictions: [],
+    openDialog: 'true',
     currentPrediction: 'present',
     emojiIdentity: {
       skinTone: 'light',
@@ -49,7 +50,10 @@ export default new Vuex.Store({
       console.log(emojiGender, emojiColor)
       state.emojiIdentity.gender = emojiGender
       state.emojiIdentity.skinTone = emojiColor
-    }
+    },
+    setOpenDialog(state, openDialog) {
+      state.openDialog = openDialog
+    },
   },
   actions: {
     bindUsers: firebaseAction(({ bindFirebaseRef }) => {
@@ -70,11 +74,11 @@ export default new Vuex.Store({
       })
 
     }),
-    updateUserSettings: firebaseAction((context, nickname, emojiColor, emojiGender) => {
-      db.ref('users/' + nickname).update({
-        nickname: nickname,
-        emojiColor: emojiColor,
-        emojiGender: emojiGender,
+    updateUserSettings: firebaseAction((context, user) => {
+      db.ref('users').child(user.userKey).update({
+        nickname: user.nickname,
+        emojiColor: user.emojiColor,
+        emojiGender: user.emojiGender,
       })
     }),
 
