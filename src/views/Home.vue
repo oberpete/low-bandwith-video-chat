@@ -76,7 +76,6 @@ import Peers from '../components/Peers.vue'
 import Chat from '../components/Chat.vue'
 import TutorialStepper from '../components/TutorialStepper.vue'
 import WebcamAndPrediction from '../components/WebcamAndPrediction.vue'
-import Emoji from '../components/Emoji.vue'
 
 import {
     mapState, mapMutations
@@ -88,7 +87,7 @@ import {
 
 export default {
   components: {
-     Peers, Chat, TutorialStepper, WebcamAndPrediction, Emoji
+     Peers, Chat, TutorialStepper, WebcamAndPrediction
   },
   data() {
     return {
@@ -133,7 +132,7 @@ export default {
       let userKey = db.ref('users').push().getKey()
       this.userKey = userKey
       this.$store.dispatch('addNewUser', {nickname, emojiColor, emojiGender, userKey})
-      console.log(emojiColor, emojiGender)
+
       this.setEmojiIdentity({emojiGender, emojiColor})
       this.setUserKey(userKey)
     },

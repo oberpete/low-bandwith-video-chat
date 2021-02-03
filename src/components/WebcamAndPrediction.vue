@@ -29,7 +29,7 @@
           </v-card-title>
           <v-card-text>
           <v-avatar size="150" color="grey lighten-1">
-            <Emoji :status="currentState" :gender="emojiIdentity.gender" :skinTone="emojiIdentity.skinTone" size="xl"/>
+            <Emoji :status="currentPrediction" :gender="emojiIdentity.gender" :skinTone="emojiIdentity.skinTone" size="xl"/>
           </v-avatar>
           </v-card-text>
         </v-card>
@@ -120,7 +120,7 @@ export default {
     },
     async loop() {
       var that = this
-      console.log(this.userKey)
+
       // check if user initialization finished
       if (this.userKey) {
         that.webcam.update()
@@ -132,6 +132,7 @@ export default {
     },
     async predict() {
       this.setPredictions(await this.model.predict(this.webcam.canvas))
+      console.log(this.predictions[this.classWithHighestProbability].className)
       this.$store.commit('setCurrentPrediction', this.predictions[this.classWithHighestProbability].className)
       this.updateStatusAsync()
 

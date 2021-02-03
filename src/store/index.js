@@ -29,33 +29,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    /* presentEmoji: (state) => {
-      return this.getPresentEmoji(state)
-    },
-    notPresentEmoji: (state) => {
-      return this.getPresentEmoji(state)
-    },
-    handRaisedEmoji: (state) => {
-      return this.getPresentEmoji(state)
-    },
-    thumbsUpEmoji: (state) => {
-      return this.getPresentEmoji(state)
-    },
-    heartSignEmoji: (state) => {
-      return this.getPresentEmoji(state)
-    }, */
-    getEmojiByCurrentPrediction: (state) => {
-      switch (state.currentPrediction) {
-        case 'present':
-          return state.emojiIdentity.present
-        case 'not present':
-          return state.emojiIdentity.notPresent
-        case 'hand raised':
-          return state.emojiIdentity.handRaised
-        default: 
-          return state.emojiIdentity.present
-      }
-    }
+
   },
   methods: {
    
