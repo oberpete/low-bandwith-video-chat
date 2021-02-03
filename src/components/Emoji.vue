@@ -1,22 +1,177 @@
 <template>
   <span>
-    {{ emoji }}
+    <p :class="sizeClass">{{ emoji }}</p>
   </span>
 </template>
 <script>
 export default {
   data() {
     return {
-      emoji: ''
+
     }
   },
   props: {
     'status': String,
-    'skinColor': String,
-    'gender': String
+    'skinTone': String,
+    'gender': String,
+    'size': String
   },
-  created() {
-    this.emoji = '🧑‍💼'
+  computed: {
+    sizeClass: function() {
+      switch (this.size) {
+        case 'xl':
+          return 'text-h1'
+        case 'lg':
+          return 'text-h2'
+        case 'md':
+          return 'text-h3'
+        case 'sm':
+          return 'text-h4'
+        default:
+          return 'text-h3'
+      }
+    },
+    emojiProvidesSkinColor: function() {
+      return true
+    },
+    emoji: function() {
+      switch (this.status) {
+        case 'hand-raised':
+          return this.raiseHandEmoji
+        case 'present':
+          return this.presentEmoji
+        case 'not-present':
+          return '🍺'
+        case 'no-camera':
+          return '❌'
+        default:
+          return '❓'
+      }
+    },
+    presentEmoji: function() {
+      switch (this.skinTone) {
+        case 'light':
+          switch (this.gender) {
+            case 'male':
+              return '👨🏻'
+            case 'female':
+              return '👩🏻'
+            default:
+              return '🧑🏻'
+          }
+        case 'medium-light':
+          switch (this.gender) {
+            case 'male':
+              return '👨🏼'
+            case 'female':
+              return '👩🏼'
+            default:
+              return '🧑🏼'
+          }
+        case 'medium':
+          switch (this.gender) {
+            case 'male':
+              return '👨🏽'
+            case 'female':
+              return '👩🏽'
+            default:
+              return '🧑🏽'
+          }
+        case 'medium-dark':
+          switch (this.gender) {
+            case 'male':
+              return '👨🏾'
+            case 'female':
+              return '👩🏾'
+            default:
+              return '🧑🏾'
+          }
+        case 'dark':
+          switch (this.gender) {
+            case 'male':
+              return '👨🏿'
+            case 'female':
+              return '👩🏿'
+            default:
+              return '🧑🏿'
+          }
+        default:
+          switch (this.gender) {
+            case 'male':
+              return '👨'
+            case 'female':
+              return '👩'
+            default:
+              return '🧑'
+          }
+      }
+    },
+    raiseHandEmoji: function() {
+      switch (this.skinTone) {
+        case 'light':
+          switch (this.gender) {
+            case 'male':
+              return '🙋🏻‍♂️'
+            case 'female':
+              return '🙋🏻‍♀️'
+            default:
+              return '🙋🏻'
+          }
+        case 'medium-light':
+          switch (this.gender) {
+            case 'male':
+              return '🙋🏼‍♂️'
+            case 'female':
+              return '🙋🏼‍♀️'
+            default:
+              return '🙋🏼'
+          }
+        case 'medium':
+          switch (this.gender) {
+            case 'male':
+              return '🙋🏽‍♂️'
+            case 'female':
+              return '🙋🏽‍♀️'
+            default:
+              return '🙋🏽'
+          }
+        case 'medium-dark':
+          switch (this.gender) {
+            case 'male':
+              return '🙋🏾‍♂️'
+            case 'female':
+              return '🙋🏾‍♀️'
+            default:
+              return '🙋🏾'
+          }
+        case 'dark':
+          switch (this.gender) {
+            case 'male':
+              return '🙋🏿‍♂️'
+            case 'female':
+              return '🙋🏿‍♀️'
+            default:
+              return '🙋🏿'
+          }
+        default:
+          switch (this.gender) {
+            case 'male':
+              return '🙋‍♂️'
+            case 'female':
+              return '🙋‍♀️'
+            default:
+              return '🙋'
+          }
+      }
+    },
+  },
+  methods: {
+
+  },
+  mounted() {
+
+
+
   }
 }
 </script>

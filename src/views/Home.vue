@@ -6,6 +6,7 @@
       persistent
     >
       <TutorialStepper @close-dialogue="handleCloseDialogue"></TutorialStepper>
+
     </v-dialog>
     <v-row>
       <span class="text-h4 font-weight-bold primary--text">
@@ -75,6 +76,7 @@ import Peers from '../components/Peers.vue'
 import Chat from '../components/Chat.vue'
 import TutorialStepper from '../components/TutorialStepper.vue'
 import WebcamAndPrediction from '../components/WebcamAndPrediction.vue'
+import Emoji from '../components/Emoji.vue'
 
 import {
     mapState, mapMutations
@@ -86,7 +88,7 @@ import {
 
 export default {
   components: {
-     Peers, Chat, TutorialStepper, WebcamAndPrediction
+     Peers, Chat, TutorialStepper, WebcamAndPrediction, Emoji
   },
   data() {
     return {

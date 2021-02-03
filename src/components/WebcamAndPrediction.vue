@@ -21,7 +21,7 @@
             <p class="text-h1">
               {{ getEmojiByCurrentPrediction() }}
             </p>
-            <Emoji/>
+            <Emoji :status="currentState" :gender="emojiIdentity.gender" :skinTone="emojiIdentity.skinTone" size="xl"/>
           </v-avatar>
           <button
               right
@@ -56,7 +56,19 @@ export default {
     }
   },
   computed: {
-    ...mapState(['users', 'predictions', 'currentPrediction', 'userKey']),
+    ...mapState(['users', 'predictions', 'currentPrediction', 'userKey', 'emojiIdentity']),
+    currentState: function() {
+      switch (this.currentPrediction) {
+        case 'present':
+          return 'present'
+        case 'not present':
+          return 'not-present'
+        case 'hand raised':
+          return 'hand-raised'
+        default:
+          return 'no-webcam';
+      }
+    },
     classWithHighestProbability: function() {
       let resultIndex = 0
       for(let i = 0; i < this.predictions.length; i++){

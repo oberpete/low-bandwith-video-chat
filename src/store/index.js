@@ -24,11 +24,8 @@ export default new Vuex.Store({
     predictions: [],
     currentPrediction: 'present',
     emojiIdentity: {
-      present: '👨‍💼',
-      notPresent: '🍺',
-      handRaised: '💁🏼',
-      thumbsUp: '👍',
-      heart: '♥'
+      skinTone: 'light',
+      gender: 'male',
     }
   },
   getters: {
