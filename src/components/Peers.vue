@@ -5,8 +5,8 @@
       <v-card class="pl-3" elevation="0" outlined>
         <v-row>
           <v-col cols="4" align="center">
-            <v-avatar tile size="60" color="linenLighter">
-              <Emoji class="mt-3" :status="peer.status" :gender="peer.emojiGender" :skinTone="peer.emojiColor" size="md"/>
+            <v-avatar size="60" color="linenLighter">
+              <Emoji class="mt-3" :status="peer.status" :gender="peer.emojiGender" :skinTone="peer.emojiColor" :heartEmojiColor="peer.heartEmojiColor" :notPresentEmojiType="peer.notPresentEmojiType" size="md"/>
             </v-avatar>
           </v-col>
           <v-col cols="8">

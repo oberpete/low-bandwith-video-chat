@@ -24,7 +24,9 @@ export default new Vuex.Store({
     emojiIdentity: {
       skinTone: 'light',
       gender: 'male',
-    }
+    },
+    heartEmojiColor: 'red', 
+    notPresentEmojiType: 'coffee'
   },
   getters: {
 
@@ -65,10 +67,12 @@ export default new Vuex.Store({
     setUserKey(state, userKey) {
       state.userKey = userKey
     },
-    setEmojiIdentity(state, {emojiGender, emojiColor}) {
+    setEmojiSettings(state, {emojiGender, emojiColor, heartEmojiColor, notPresentEmojiType}) {
       console.log(emojiGender, emojiColor)
       state.emojiIdentity.gender = emojiGender
       state.emojiIdentity.skinTone = emojiColor
+      state.heartEmojiColor = heartEmojiColor
+      state.notPresentEmojiType = notPresentEmojiType
     },
     setOpenDialog(state, openDialog) {
       state.openDialog = openDialog
@@ -92,6 +96,8 @@ export default new Vuex.Store({
         nickname: user.nickname,
         emojiColor: user.emojiColor,
         emojiGender: user.emojiGender,
+        heartEmojiColor: user.heartEmojiColor,
+        notPresentEmojiType: user.notPresentEmojiType,
         status: 'no-webcam'
       })
 
@@ -101,6 +107,8 @@ export default new Vuex.Store({
         nickname: user.nickname,
         emojiColor: user.emojiColor,
         emojiGender: user.emojiGender,
+        heartEmojiColor: user.heartEmojiColor,
+        notPresentEmojiType: user.notPresentEmojiType,
       })
     }),
 

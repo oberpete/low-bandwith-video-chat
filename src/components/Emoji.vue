@@ -14,6 +14,8 @@ export default {
     'status': String,
     'skinTone': String,
     'gender': String,
+    'heartEmojiColor': String,
+    'notPresentEmojiType': String,
     'size': String
   },
   computed: {
@@ -43,9 +45,9 @@ export default {
         case 'thumbs-up':
           return this.thumbsUpEmoji
         case 'heart':
-          return '❤️'
+          return this.heartEmoji
         case 'not-present':
-          return '🍺'
+          return this.notPresentEmoji
         case 'no-camera':
           return '❌'
         default:
@@ -182,6 +184,46 @@ export default {
           return '👍🏿'
         default:
           return '👍'
+      }
+    },
+    heartEmoji: function() {
+      switch(this.heartEmojiColor) {
+        case 'red':
+          return '❤️' 
+        case 'orange':
+          return '🧡'
+        case 'yellow':
+          return '💛'
+        case 'green':
+          return '💚'
+        case 'blue':
+          return '💙'
+        case 'purple':
+          return '💜'
+        case 'black':
+          return '🖤'
+        case 'white':
+          return '🤍'
+        case 'brown':
+          return '🤎'  
+        default:
+          return '❤️'
+      }
+    },
+    notPresentEmoji: function() {
+      switch(this.notPresentEmojiType) {
+        case 'coffee':
+          return '☕️' 
+        case 'tea':
+          return '🍵'
+        case 'juice':
+          return '🧃'
+        case 'beer':
+          return '🍺'
+        case 'wine':
+          return '🍷'
+        default:
+          return '☕️'
       }
     },
   },

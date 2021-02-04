@@ -58,7 +58,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['setUserKey', 'setEmojiIdentity', 'setOpenDialog']),
+    ...mapMutations(['setUserKey', 'setEmojiSettings', 'setOpenDialog']),
       
     getIcon: function(className) {
       switch (className) {
@@ -72,7 +72,7 @@ export default {
           return 'mdi-exclamation-thick'
       }
     },
-    handleCloseDialogue: function({nickname, emojiColor, emojiGender}) {
+    handleCloseDialogue: function({nickname, emojiColor, emojiGender, heartEmojiColor, notPresentEmojiType}) {
       this.nickname = nickname
       this.emojiColor = emojiColor
       this.emojiGender = emojiGender
@@ -81,16 +81,16 @@ export default {
       if (this.newUser) {
         let userKey = db.ref('users').push().getKey()
         this.userKey = userKey
-        this.$store.dispatch('addNewUser', {nickname, emojiColor, emojiGender, userKey})
+        this.$store.dispatch('addNewUser', {nickname, emojiColor, emojiGender, userKey, heartEmojiColor, notPresentEmojiType})
         this.setUserKey(userKey) 
         this.newUser = false
       } else {
         let userKey = this.userKey
-        this.$store.dispatch('updateUserSettings', {nickname, emojiColor, emojiGender, userKey})
+        this.$store.dispatch('updateUserSettings', {nickname, emojiColor, emojiGender, userKey, heartEmojiColor, notPresentEmojiType})
         this.setUserKey(userKey) 
       }
       this.setOpenDialog(false)
-      this.setEmojiIdentity({emojiGender, emojiColor})
+      this.setEmojiSettings({emojiGender, emojiColor, heartEmojiColor, notPresentEmojiType})
       
     },
     leaving: function() {
@@ -99,7 +99,6 @@ export default {
     },
   },
   computed: {
-    /*...mapState(['users', 'notPresentEmoji', 'handRaisedEmoji', 'presentEmoji', 'predictions']),*/
     ...mapState(['users', 'currentPrediction', 'openDialog']),
   }
 }
