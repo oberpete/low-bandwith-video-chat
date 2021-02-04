@@ -10,57 +10,12 @@
     <v-row>
       <v-col cols="12" md="5">
         <WebcamAndPrediction />
-
       </v-col>
       <v-col cols="12" md="7">
         <Peers />
         <Chat />
       </v-col>
     </v-row>
-    <!-- <v-row v-if="predictions" class="opacity">
-      <v-col v-for="(prediction, i) in predictions" v-bind:key="prediction.className">
-        <v-card :color="classWithHighestProbability === i ? 'orange lighten-3' : ''">
-          <v-card-title>
-            {{ prediction.className }}
-          </v-card-title>
-          <v-card-text>
-            <v-icon large>
-              {{getIcon(prediction.className)}}
-            </v-icon>
-            <span class="overline">
-              {{ prediction.probability }}
-            </span>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row> -->
-    <!-- 
-     <v-row class="mx-6 my-2" v-for="(feedItem, index) in users" v-bind:key="index">
-      <v-col cols="12" class="mt-8">
-        <v-card class="mx-auto" max-width="344">
-            <div>Key: {{ feedItem['.key'] }}</div>
-            <p class="display-1 text--primary">
-              {{ feedItem.presentEmoji }}
-            </p>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <v-card class="mx-auto" max-width="344">
-            <div>User Emojis</div>
-            <p class="display-1 text--primary">
-              PresentEmoji: {{ this.presentEmoji }}
-            </p>
-            <p class="display-1 text--primary">
-              NotPresentEmoji: {{ this.notPresentEmoji }}
-            </p>
-            <p class="display-1 text--primary">
-              handRaisedEmoji: {{ this.handRaisedEmoji }}
-            </p>
-        </v-card>
-      </v-col> 
-    </v-row> -->
   </v-container>
 </template>
 

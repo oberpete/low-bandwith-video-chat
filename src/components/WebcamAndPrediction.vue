@@ -28,12 +28,22 @@
       </v-col>
     </v-row>
     <v-row dense class="pa-2">
-      <v-col cols="6" v-for="predictionClass in predictions" v-bind:key="predictionClass.className">
+      <v-col cols="6" v-for="predictionClass in statesImplemented" v-bind:key="predictionClass.className">
         <v-card flat :class="predictionClass.className === currentPrediction.className ? 'primaryAccent2' : 'primaryAccent3'">
           <v-card-text class="pt-0">
-          <span :class="predictionClass.className === currentPrediction.className ? 'text-overline font-weight-black primary--text' : 'text-overline'">
-            {{ predictionClass.className }}
-          </span>
+            <v-row>
+              <v-col cols="4">
+                <v-avatar tile size="30">
+                  <v-img contain :src="predictionClass.icon"></v-img>
+                </v-avatar>
+              </v-col>
+              <v-col cols="8">
+                <span :class="predictionClass.className === currentPrediction.className ? 'text-overline font-weight-black primary--text' : 'text-overline'">
+                  {{ predictionClass.className }}
+                </span>
+              </v-col>
+            </v-row>
+          
           <v-progress-linear
             :value="predictionClass.className === currentPrediction.className ? getProgressBarValue : 0"
             stream
@@ -42,8 +52,12 @@
           ></v-progress-linear>
           </v-card-text>
         </v-card>
-        
       </v-col>
+      <v-row class="text-center" no-gutters>
+        <v-col>
+          <p class="text-caption primaryAccent1--text mb-0">Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
+        </v-col>
+      </v-row>
     </v-row>
     
   </v-card>
@@ -65,7 +79,29 @@ export default {
       webcam: null,
       webcamIsLoading: false,
       url: 'https://teachablemachine.withgoogle.com/models/erVKbrLsV/',
-      webcamSetupFinished: false
+      webcamSetupFinished: false,
+      statesImplemented: [
+        {
+          className: 'present',
+          icon: require('../assets/present.svg')
+        },
+        {
+          className: 'not-present',
+          icon: require('../assets/not_present.svg')
+        },
+        {
+          className: 'hand-raised',
+          icon: require('../assets/hand_raised.svg')
+        },
+        {
+          className: 'thumbs-up',
+          icon: require('../assets/hand_thumbs_up.svg')
+        },
+        {
+          className: 'heart',
+          icon: require('../assets/hand_heart.svg')
+        }
+      ]
     }
   },
   watch: {
@@ -129,14 +165,13 @@ export default {
         await this.predict()
       }
       // timeout could be increased to improve performance
-      setTimeout(function(){ window.requestAnimationFrame(that.loop) }, 500);
+      setTimeout(function(){ window.requestAnimationFrame(that.loop) }, 300);
       
     },
     async predict() {
       this.setPrediction(await this.model.predict(this.webcam.canvas))
       console.log(this.currentPrediction)
-
-
+      console.log('predictions', this.predictions)
     },
     updateStatusInDB: function() {
       // how can we make sure that this is not fired every millisec?

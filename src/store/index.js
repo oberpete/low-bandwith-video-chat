@@ -19,7 +19,7 @@ export default new Vuex.Store({
     // current prediction (className, probability, noOfConsecutiveLoops)
     currentPrediction: {},
     // state that will be shared with others
-    currentState: 'present',
+    currentState: 'no-webcam',
     openDialog: 'true',
     emojiIdentity: {
       skinTone: 'light',
@@ -92,7 +92,7 @@ export default new Vuex.Store({
         nickname: user.nickname,
         emojiColor: user.emojiColor,
         emojiGender: user.emojiGender,
-        status: 'present'
+        status: 'no-webcam'
       })
 
     }),
