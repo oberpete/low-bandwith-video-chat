@@ -21,7 +21,7 @@
         <v-card color="transparent" outlined height="100%" align="center">
           <v-card-text>
           <v-avatar size="155" color="linen">
-            <Emoji :status="currentPrediction" :gender="emojiIdentity.gender" :skinTone="emojiIdentity.skinTone" size="xl"/>
+            <Emoji :status="prediction.className" :gender="emojiIdentity.gender" :skinTone="emojiIdentity.skinTone" size="xl"/>
           </v-avatar>
           </v-card-text>
         </v-card>
@@ -38,7 +38,7 @@ import {
   db
 } from '@/store/db'
 import { throttle } from 'lodash';
-import { mapMutations, mapState } from 'vuex'
+import { mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
   components: {Emoji},
@@ -59,31 +59,11 @@ export default {
     }
   },
   computed: {
-    ...mapState(['users', 'predictions', 'currentPrediction', 'userKey', 'emojiIdentity']),
-    currentState: function() {
-      switch (this.currentPrediction) {
-        case 'present':
-          return 'present'
-        case 'not present':
-          return 'not-present'
-        case 'hand raised':
-          return 'hand-raised'
-        default:
-          return 'no-webcam';
-      }
-    },
-    classWithHighestProbability: function() {
-      let resultIndex = 0
-      for(let i = 0; i < this.predictions.length; i++){
-        if (this.predictions[i].probability > this.predictions[resultIndex].probability) {
-          resultIndex = i
-        }
-      }
-      return resultIndex
-    },
+    ...mapState(['users', 'prediction', 'userKey', 'emojiIdentity']),
+    ...mapGetters(['classWithHighestValueFromLatestPrediction']),    
   },
   methods: {
-    ...mapMutations(['setPredictions']),
+    ...mapMutations(['setPrediction']),
     async requestWebcam() {
       var that = this
       const modelURL = `${this.url}model.json`
@@ -123,18 +103,19 @@ export default {
       
     },
     async predict() {
-      this.setPredictions(await this.model.predict(this.webcam.canvas))
-      console.log(this.predictions[this.classWithHighestProbability].className)
-      this.$store.commit('setCurrentPrediction', this.predictions[this.classWithHighestProbability].className)
+      this.setPrediction(await this.model.predict(this.webcam.canvas))
+      console.log(this.prediction)
+      // console.log(this.classWithHighestValueFromLatestPrediction)
+      // this.$store.commit('setCurrentPrediction', this.classWithHighestValueFromLatestPrediction)
       this.updateStatusAsync()
 
     },
     updateStatusAsync: throttle(function() {
       console.log('userKey', this.userKey)
-      
+      console.log('userKey', this.userKey)
       // how can we make sure that this is not fired every millisec?
       db.ref('users').child(this.userKey).update({
-        status: this.predictions[this.classWithHighestProbability].className
+        status: this.prediction.className
       })
     }, 200),
   }

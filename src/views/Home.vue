@@ -22,7 +22,7 @@
         <Peers />
       </v-col>
     </v-row>
-    <v-row v-if="predictions" class="opacity">
+    <!-- <v-row v-if="predictions" class="opacity">
       <v-col v-for="(prediction, i) in predictions" v-bind:key="prediction.className">
         <v-card :color="classWithHighestProbability === i ? 'orange lighten-3' : ''">
           <v-card-title>
@@ -38,7 +38,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-    </v-row>
+    </v-row> -->
     <!-- 
      <v-row class="mx-6 my-2" v-for="(feedItem, index) in users" v-bind:key="index">
       <v-col cols="12" class="mt-8">
@@ -143,7 +143,7 @@ export default {
   },
   computed: {
     /*...mapState(['users', 'notPresentEmoji', 'handRaisedEmoji', 'presentEmoji', 'predictions']),*/
-    ...mapState(['users', 'predictions']),
+    ...mapState(['users', 'prediction']),
     classWithHighestProbability: function() {
       let resultIndex = 0
       for(let i = 0; i < this.predictions.length; i++){

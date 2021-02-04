@@ -13,16 +13,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     users: [],
-    // presentEmoji: '🧑‍💼',
-    // notPresentEmoji: '🍺',
-    // handRaisedEmoji: '💁🏼',
-    // thumbsUpEmoji: '👍',
-    // heartSignEmoji: '♥',
-    emojiSkinColor: 'skinColorDefault',
-    emojiGender: 'female',
     userKey: '',
-    predictions: [],
-    currentPrediction: 'present',
+    // current prediction (className, probability, noOfConsecutiveLoops)
+    prediction: {},
     emojiIdentity: {
       skinTone: 'light',
       gender: 'male',
@@ -31,16 +24,33 @@ export default new Vuex.Store({
   getters: {
 
   },
-  methods: {
-   
-  },
   mutations: {
     ...vuexfireMutations,
-    setPredictions(state, predictions) {
-      state.predictions = predictions
-    },
-    setCurrentPrediction(state, currentPrediction) {
-      state.currentPrediction = currentPrediction
+    setPrediction(state, predictions) {
+      let previousPrediction = state.prediction
+
+      // get class w highest probability
+      let iMax = 0
+      for(let i = 0; i < predictions.length; i++){
+        if (predictions[i].probability > predictions[iMax].probability) {
+          iMax = i
+        }
+      }
+      var prediction = {}
+      prediction.className = predictions[iMax].className
+      prediction.probability = predictions[iMax].probability
+      console.log('objkect.keys', Object.keys(previousPrediction), 
+        Object.keys(previousPrediction).length && previousPrediction.className === prediction.className, 
+        previousPrediction.className, prediction.className)
+
+      // check if previous state equals current state and save number of consecutive loops
+      if (Object.keys(previousPrediction).length && previousPrediction.className === prediction.className) {
+        prediction.noOfConsecutiveLoops = previousPrediction.noOfConsecutiveLoops + 1
+      } else {
+        prediction.noOfConsecutiveLoops = 1
+      }
+
+      state.prediction = prediction
     },
     setUserKey(state, userKey) {
       state.userKey = userKey
