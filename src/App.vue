@@ -12,7 +12,7 @@
       </v-icon>
 
       <span
-        class="text-h5 font-weight-bold white--text"
+        class="text-h6 font-weight-bold white--text"
       >
         Low-Bandwith-Video-Chat
       </span>

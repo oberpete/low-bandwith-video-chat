@@ -1,7 +1,7 @@
 <template>
   <v-card class="pa-2" elevation="2">
   <v-row no-gutters>
-    <v-col cols="4" v-for="peer in users" v-bind:key="peer.name" class="pa-1">
+    <v-col cols="12" md="4" v-for="peer in users" v-bind:key="peer.name" class="pa-1">
       <v-card class="pl-3" elevation="0" outlined>
         <v-row>
           <v-col cols="4" align="center">
@@ -10,7 +10,7 @@
             </v-avatar>
           </v-col>
           <v-col cols="8">
-            <div class="text-h6 font-weight-bold primary--text mt-3">
+            <div class="text-truncate text-h6 font-weight-bold primary--text mt-3">
               {{ peer['nickname'] }}
             </div>
           </v-col>

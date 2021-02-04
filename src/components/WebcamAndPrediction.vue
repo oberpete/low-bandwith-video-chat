@@ -1,7 +1,7 @@
 <template>
   <v-card color="grey lighten-4" elevation="12">
     <v-row>
-      <v-col cols="6">
+      <v-col cols="12" md="6">
         <v-card flat color="transparent" rounded="lg" class="margin" align="center">
           <v-card-text>
             <div>
@@ -17,7 +17,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="6">
+      <v-col cols="12" md="6">
         <v-card color="transparent" outlined height="100%" align="center">
           <v-card-text>
           <v-avatar size="155" color="primaryAccent3">
@@ -29,7 +29,7 @@
     </v-row>
     <v-row dense class="pa-2">
       <v-col cols="6" v-for="predictionClass in statesImplemented" v-bind:key="predictionClass.className">
-        <v-card flat :class="predictionClass.className === currentPrediction.className ? 'primaryAccent2' : 'primaryAccent3'">
+        <v-card flat height="100%" :class="predictionClass.className === currentPrediction.className ? 'primaryAccent2' : 'primaryAccent3'">
           <v-card-text class="pt-0">
             <v-row>
               <v-col cols="4">
