@@ -21,7 +21,7 @@
         <v-card color="transparent" outlined height="100%" align="center">
           <v-card-text>
           <v-avatar size="155" color="primaryAccent3">
-            <Emoji :status="currentState" :gender="emojiIdentity.gender" :skinTone="emojiIdentity.skinTone" size="xl"/>
+            <Emoji :status="currentState" :gender="emojiIdentity.gender" :skinTone="emojiIdentity.skinTone" :heartEmojiColor="heartEmojiColor" :notPresentEmojiType="notPresentEmojiType" size="xl"/>
           </v-avatar>
           </v-card-text>
         </v-card>
@@ -118,7 +118,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['users', 'currentPrediction', 'predictions', 'userKey', 'emojiIdentity', 'currentState']),
+    ...mapState(['users', 'currentPrediction', 'predictions', 'userKey', 'emojiIdentity', 'currentState', 'heartEmojiColor', 'notPresentEmojiType']),
     ...mapGetters(['classWithHighestValueFromLatestPrediction']),    
     getProgressBarValue: function() {
       if (this.currentPrediction.noOfConsecutiveLoops < 5) {

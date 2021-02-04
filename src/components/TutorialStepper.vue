@@ -44,13 +44,13 @@
 
       <v-stepper-content step="3">
 
-        You can customize the color and gender of your emojis to fit your preferences as well:
+        You can customize the color, gender and style of your emojis to fit your preferences as well:
         <v-card flat>
           <v-card-text>
 
             <v-container fluid>
               <v-row>
-                <v-col cols="12" sm="6" md="6">
+                <v-col cols="6" sm="6" md="6">
                   Color:
                   <v-radio-group v-model="emojiColor" column>
                     <v-radio label="👋" color="yellow" value="skinColorDefault"></v-radio>
@@ -67,6 +67,30 @@
                     <v-radio label="👩" color="red" value="female"></v-radio>
                     <v-radio label="👨" color="indigo" value="male"></v-radio>
                     <v-radio label="🧑" color="indigo darken-3" value="genderneutral"></v-radio>
+                  </v-radio-group>
+                </v-col>
+                <v-col cols="12" sm="5" md="6">
+                  Not Present:
+                  <v-radio-group v-model="notPresentEmojiType" column>
+                    <v-radio label="☕️" color="red" value="coffee"></v-radio>
+                    <v-radio label="🍵" color="indigo" value="tea"></v-radio>
+                    <v-radio label="🧃" color="indigo darken-3" value="juice"></v-radio>
+                    <v-radio label="🍺" color="orange" value="beer"></v-radio>
+                    <v-radio label="🍷" color="orange darken-3" value="wine"></v-radio>
+                  </v-radio-group>
+                </v-col>
+                <v-col cols="12" sm="6" md="6">
+                  Heart Sign:
+                  <v-radio-group v-model="heartEmojiColor" column>
+                    <v-radio label="❤️" color="red" value="red"></v-radio>
+                    <v-radio label="🧡" color="indigo" value="orange"></v-radio>
+                    <v-radio label="💛" color="indigo darken-1" value="yellow"></v-radio>
+                    <v-radio label="💚" color="orange" value="green"></v-radio>
+                    <v-radio label="💙" color="orange darken-2" value="blue"></v-radio>
+                    <v-radio label="💜" color="orange darken-3" value="purple"></v-radio>
+                    <v-radio label="🖤" color="orange darken-4" value="black"></v-radio>
+                    <v-radio label="🤍" color="orange darken-5" value="white"></v-radio>
+                    <v-radio label="🤎" color="orange darken-6" value="brown"></v-radio>
                   </v-radio-group>
                 </v-col>
               </v-row>
@@ -89,6 +113,8 @@
         step: 1,
         emojiColor: "skinColorDefault",
         emojiGender: "female",
+        heartEmojiColor: "red",
+        notPresentEmojiType: "coffee",
         valid: false,
         nickname: "",
         nameRules: [v => !!v || "Nickname is required"],
@@ -98,7 +124,8 @@
       sendCloseEvent: function () {
         this.step = 2
         this.newUser = false
-        this.$emit("close-dialogue", {nickname: this.nickname, emojiColor: this.emojiColor, emojiGender: this.emojiGender});
+        this.$emit("close-dialogue", {nickname: this.nickname, emojiColor: this.emojiColor, emojiGender: this.emojiGender, 
+                                      heartEmojiColor: this.heartEmojiColor, notPresentEmojiType: this.notPresentEmojiType});
       }
     }
   };
