@@ -75,7 +75,7 @@ export default {
       this.requestWebcam()
     },
     currentPrediction (prediction) {
-      if (this.currentState !== prediction.className && prediction.noOfConsecutiveLoops > 5) {
+      if (this.currentState !== prediction.className && prediction.noOfConsecutiveLoops > 4) {
         this.setCurrentState(prediction.className)
         this.updateStatusInDB()
       }
@@ -85,8 +85,8 @@ export default {
     ...mapState(['users', 'currentPrediction', 'predictions', 'userKey', 'emojiIdentity', 'currentState']),
     ...mapGetters(['classWithHighestValueFromLatestPrediction']),    
     getProgressBarValue: function() {
-      if (this.currentPrediction.noOfConsecutiveLoops < 6) {
-        return (this.currentPrediction.noOfConsecutiveLoops * 20)
+      if (this.currentPrediction.noOfConsecutiveLoops < 5) {
+        return (this.currentPrediction.noOfConsecutiveLoops * 25)
       } else {
         return 100
       }
@@ -117,7 +117,7 @@ export default {
       setTimeout(function(){ 
         const webcamContainer = that.$refs.webcam
         webcamContainer.appendChild(that.webcam.canvas)
-      }, 1000);
+      }, 500);
       window.requestAnimationFrame(this.loop)
     },
     async loop() {
