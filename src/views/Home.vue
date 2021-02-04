@@ -1,12 +1,11 @@
 <template>
   <v-container>
     <v-dialog
-      v-model="dialog"
+      v-model="openDialog"
       width="800"
-      persistent
+      :persistent="!newUser"
     >
-      <TutorialStepper @close-dialogue="handleCloseDialogue"></TutorialStepper>
-
+      <TutorialStepper @close-dialogue="handleCloseDialogue" :newUser="newUser"></TutorialStepper>
     </v-dialog>
     <v-row>
       <span class="text-h4 font-weight-bold primary--text">
@@ -98,6 +97,7 @@ export default {
       emojiColor: "",
       emojiGender: "",
       userKey: "",
+      newUser: true,
     }
   },
 
@@ -107,7 +107,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['setUserKey', 'setEmojiIdentity']),
+    ...mapMutations(['setUserKey', 'setEmojiIdentity', 'setOpenDialog']),
       
     getIcon: function(className) {
       switch (className) {
@@ -121,20 +121,26 @@ export default {
           return 'mdi-exclamation-thick'
       }
     },
-    setNewEmoji: function() {
-      this.$store.commit('setPresentEmoji', '🥐')
-    },
     handleCloseDialogue: function({nickname, emojiColor, emojiGender}) {
       this.nickname = nickname
       this.emojiColor = emojiColor
       this.emojiGender = emojiGender
       this.dialog = false
-      let userKey = db.ref('users').push().getKey()
-      this.userKey = userKey
-      this.$store.dispatch('addNewUser', {nickname, emojiColor, emojiGender, userKey})
 
+      if (this.newUser) {
+        let userKey = db.ref('users').push().getKey()
+        this.userKey = userKey
+        this.$store.dispatch('addNewUser', {nickname, emojiColor, emojiGender, userKey})
+        this.setUserKey(userKey) 
+        this.newUser = false
+      } else {
+        let userKey = this.userKey
+        this.$store.dispatch('updateUserSettings', {nickname, emojiColor, emojiGender, userKey})
+        this.setUserKey(userKey) 
+      }
+      this.setOpenDialog(false)
       this.setEmojiIdentity({emojiGender, emojiColor})
-      this.setUserKey(userKey)
+      
     },
     leaving: function() {
       let userKey = this.userKey
@@ -143,16 +149,7 @@ export default {
   },
   computed: {
     /*...mapState(['users', 'notPresentEmoji', 'handRaisedEmoji', 'presentEmoji', 'predictions']),*/
-    ...mapState(['users', 'prediction']),
-    classWithHighestProbability: function() {
-      let resultIndex = 0
-      for(let i = 0; i < this.predictions.length; i++){
-        if (this.predictions[i].probability > this.predictions[resultIndex].probability) {
-          resultIndex = i
-        }
-      }
-      return resultIndex
-    }
+    ...mapState(['users', 'prediction', 'openDialog']),
   }
 }
 </script>
