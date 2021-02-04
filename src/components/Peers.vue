@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined class="pa-2">
+  <v-card class="pa-2" elevation="2">
   <v-row no-gutters>
     <v-col cols="4" v-for="peer in users" v-bind:key="peer.name" class="pa-1">
       <v-card class="linenLighter pl-3" elevation="0" outlined>

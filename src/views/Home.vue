@@ -8,17 +8,13 @@
       <TutorialStepper @close-dialogue="handleCloseDialogue" :newUser="newUser"></TutorialStepper>
     </v-dialog>
     <v-row>
-      <span class="text-h4 font-weight-bold primary--text">
-        Very Important Meeting
-      </span>
-    </v-row>
-    <v-row>
       <v-col cols="12" md="5">
         <WebcamAndPrediction />
-        <Chat />
+
       </v-col>
       <v-col cols="12" md="7">
         <Peers />
+        <Chat />
       </v-col>
     </v-row>
     <!-- <v-row v-if="predictions" class="opacity">
@@ -149,7 +145,7 @@ export default {
   },
   computed: {
     /*...mapState(['users', 'notPresentEmoji', 'handRaisedEmoji', 'presentEmoji', 'predictions']),*/
-    ...mapState(['users', 'prediction', 'openDialog']),
+    ...mapState(['users', 'currentPrediction', 'openDialog']),
   }
 }
 </script>

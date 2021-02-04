@@ -1,8 +1,8 @@
 <template>
-  <v-card color="grey lighten-2" tile>
+  <v-card color="grey lighten-4" elevation="12">
     <v-row>
       <v-col cols="6">
-        <v-card color="transparent" rounded="lg" outlined class="margin" align="center">
+        <v-card flat color="transparent" rounded="lg" class="margin" align="center">
           <v-card-text>
             <div>
               <div v-if="!webcamSetupFinished">
@@ -20,11 +20,29 @@
       <v-col cols="6">
         <v-card color="transparent" outlined height="100%" align="center">
           <v-card-text>
-          <v-avatar size="155" color="linen">
-            <Emoji :status="prediction.className" :gender="emojiIdentity.gender" :skinTone="emojiIdentity.skinTone" size="xl"/>
+          <v-avatar size="155" color="primaryAccent3">
+            <Emoji :status="currentState" :gender="emojiIdentity.gender" :skinTone="emojiIdentity.skinTone" size="xl"/>
           </v-avatar>
           </v-card-text>
         </v-card>
+      </v-col>
+    </v-row>
+    <v-row dense class="pa-2">
+      <v-col cols="6" v-for="predictionClass in predictions" v-bind:key="predictionClass.className">
+        <v-card flat :class="predictionClass.className === currentPrediction.className ? 'primaryAccent2' : 'primaryAccent3'">
+          <v-card-text class="pt-0">
+          <span :class="predictionClass.className === currentPrediction.className ? 'text-overline font-weight-black primary--text' : 'text-overline'">
+            {{ predictionClass.className }}
+          </span>
+          <v-progress-linear
+            :value="predictionClass.className === currentPrediction.className ? getProgressBarValue : 0"
+            stream
+            buffer-value="0"
+            color="primary"
+          ></v-progress-linear>
+          </v-card-text>
+        </v-card>
+        
       </v-col>
     </v-row>
     
@@ -37,7 +55,6 @@ import Emoji from '../components/Emoji.vue'
 import {
   db
 } from '@/store/db'
-import { throttle } from 'lodash';
 import { mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
@@ -56,14 +73,27 @@ export default {
       // onboarding and initialization over when user key set
       // request webcam
       this.requestWebcam()
+    },
+    currentPrediction (prediction) {
+      if (this.currentState !== prediction.className && prediction.noOfConsecutiveLoops > 5) {
+        this.setCurrentState(prediction.className)
+        this.updateStatusInDB()
+      }
     }
   },
   computed: {
-    ...mapState(['users', 'prediction', 'userKey', 'emojiIdentity']),
+    ...mapState(['users', 'currentPrediction', 'predictions', 'userKey', 'emojiIdentity', 'currentState']),
     ...mapGetters(['classWithHighestValueFromLatestPrediction']),    
+    getProgressBarValue: function() {
+      if (this.currentPrediction.noOfConsecutiveLoops < 6) {
+        return (this.currentPrediction.noOfConsecutiveLoops * 20)
+      } else {
+        return 100
+      }
+    }
   },
   methods: {
-    ...mapMutations(['setPrediction']),
+    ...mapMutations(['setPrediction', 'setCurrentState']),
     async requestWebcam() {
       var that = this
       const modelURL = `${this.url}model.json`
@@ -104,20 +134,16 @@ export default {
     },
     async predict() {
       this.setPrediction(await this.model.predict(this.webcam.canvas))
-      console.log(this.prediction)
-      // console.log(this.classWithHighestValueFromLatestPrediction)
-      // this.$store.commit('setCurrentPrediction', this.classWithHighestValueFromLatestPrediction)
-      this.updateStatusAsync()
+      console.log(this.currentPrediction)
+
 
     },
-    updateStatusAsync: throttle(function() {
-      console.log('userKey', this.userKey)
-      console.log('userKey', this.userKey)
+    updateStatusInDB: function() {
       // how can we make sure that this is not fired every millisec?
       db.ref('users').child(this.userKey).update({
-        status: this.prediction.className
+        status: this.currentState
       })
-    }, 200),
+    }
   }
 }
 </script>

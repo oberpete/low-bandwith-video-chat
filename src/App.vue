@@ -1,18 +1,18 @@
 <template>
-  <v-app>
+  <v-app :style="{background: $vuetify.theme.themes.light.background}">
     <v-app-bar
       app
       color="primary"
       dark
     >
       <v-icon
-        class="mr-2"
+        class="white--text mr-2"
       >
         mdi-forum
       </v-icon>
 
       <span
-        class="text-h5 font-weight-bold"
+        class="text-h5 font-weight-bold white--text"
       >
         Low-Bandwith-Video-Chat
       </span>
@@ -22,6 +22,7 @@
       <v-btn
         target="_blank"
         text
+        class="white--text"
         @click="handleSettiingsClick"
       >
         <v-icon left>mdi-cog</v-icon>

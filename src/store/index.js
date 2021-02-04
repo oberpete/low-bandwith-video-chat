@@ -14,8 +14,12 @@ export default new Vuex.Store({
   state: {
     users: [],
     userKey: '',
+    // TM response with all classes and corresponding probabilities
+    predictions: [],
     // current prediction (className, probability, noOfConsecutiveLoops)
-    prediction: {},
+    currentPrediction: {},
+    // state that will be shared with others
+    currentState: 'present',
     openDialog: 'true',
     emojiIdentity: {
       skinTone: 'light',
@@ -28,7 +32,11 @@ export default new Vuex.Store({
   mutations: {
     ...vuexfireMutations,
     setPrediction(state, predictions) {
-      let previousPrediction = state.prediction
+      // save TM response with all classes
+      state.predictions = predictions
+
+      // extract and save current prediction
+      let previousPrediction = state.currentPrediction
 
       // get class w highest probability
       let iMax = 0
@@ -37,21 +45,22 @@ export default new Vuex.Store({
           iMax = i
         }
       }
-      var prediction = {}
-      prediction.className = predictions[iMax].className
-      prediction.probability = predictions[iMax].probability
+      // construct predictionObject
+      var currentPrediction = {}
+      currentPrediction.className = predictions[iMax].className
+      currentPrediction.probability = predictions[iMax].probability
       console.log('objkect.keys', Object.keys(previousPrediction), 
-        Object.keys(previousPrediction).length && previousPrediction.className === prediction.className, 
-        previousPrediction.className, prediction.className)
+        Object.keys(previousPrediction).length && previousPrediction.className === currentPrediction.className, 
+        previousPrediction.className, currentPrediction.className)
 
       // check if previous state equals current state and save number of consecutive loops
-      if (Object.keys(previousPrediction).length && previousPrediction.className === prediction.className) {
-        prediction.noOfConsecutiveLoops = previousPrediction.noOfConsecutiveLoops + 1
+      if (Object.keys(previousPrediction).length && previousPrediction.className === currentPrediction.className) {
+        currentPrediction.noOfConsecutiveLoops = previousPrediction.noOfConsecutiveLoops + 1
       } else {
-        prediction.noOfConsecutiveLoops = 1
+        currentPrediction.noOfConsecutiveLoops = 1
       }
 
-      state.prediction = prediction
+      state.currentPrediction = currentPrediction
     },
     setUserKey(state, userKey) {
       state.userKey = userKey
@@ -63,6 +72,9 @@ export default new Vuex.Store({
     },
     setOpenDialog(state, openDialog) {
       state.openDialog = openDialog
+    },
+    setCurrentState(state, currrentState) {
+      state.currentState = currrentState
     },
   },
   actions: {
