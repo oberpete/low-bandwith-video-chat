@@ -50,7 +50,7 @@
 
             <v-container fluid>
               <v-row>
-                <v-col cols="6" sm="6" md="6">
+                <v-col cols="3">
                   Color:
                   <v-radio-group v-model="emojiColor" column>
                     <v-radio label="👋" color="yellow" value="skinColorDefault"></v-radio>
@@ -61,7 +61,7 @@
                     <v-radio label="👋🏿" color="orange darken-3" value="dark"></v-radio>
                   </v-radio-group>
                 </v-col>
-                <v-col cols="12" sm="6" md="6">
+                <v-col cols="3">
                   Gender:
                   <v-radio-group v-model="emojiGender" column>
                     <v-radio label="👩" color="red" value="female"></v-radio>
@@ -69,7 +69,7 @@
                     <v-radio label="🧑" color="indigo darken-3" value="genderneutral"></v-radio>
                   </v-radio-group>
                 </v-col>
-                <v-col cols="12" sm="5" md="6">
+                <v-col cols="3" >
                   Not Present:
                   <v-radio-group v-model="notPresentEmojiType" column>
                     <v-radio label="☕️" color="red" value="coffee"></v-radio>
@@ -79,7 +79,7 @@
                     <v-radio label="🍷" color="orange darken-3" value="wine"></v-radio>
                   </v-radio-group>
                 </v-col>
-                <v-col cols="12" sm="6" md="6">
+                <v-col cols="3">
                   Heart Sign:
                   <v-radio-group v-model="heartEmojiColor" column>
                     <v-radio label="❤️" color="red" value="red"></v-radio>
