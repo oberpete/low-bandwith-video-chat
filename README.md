@@ -1,4 +1,6 @@
 # low-bandwith-video-chat
+Prototype developed in the course 'Building Interaction Interfaces' at TU Wien. 
+
 Low-bandwith-video-chat takes a webcam input and determines the user's position to show a fitting emoji that is then sent to other participants as a representation. This provides three main benefits: preservation of some privacy, very low bandwith requirements and the option to get an overview over large amounts of users without needing to watch multiple video streams.
 
 Recognised states are:
