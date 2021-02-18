@@ -18,7 +18,7 @@ The webapp includes an onboarding process that allows the selection of a nicknam
 - vue.js web app
 
 ## Live Demo
-![demo](docs/demo/lowBandwVideoChat_prototype.gif)
+![demo](lowBandwVideoChat_prototype_reducedFrames.gif)
 See [https://oberpete.github.io/low-bandwith-video-chat/](https://oberpete.github.io/low-bandwith-video-chat/)
 
 ## Project setup
